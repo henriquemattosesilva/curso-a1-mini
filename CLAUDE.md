@@ -39,3 +39,9 @@ hotend; menus da tela; local do microSD; comportamento de "Change filament" sem 
 - Atualizar os itens "confira" com o que ele vir na máquina real (fotos dele).
 - Módulo BMCU detalhado quando comprar.
 - Diário de impressões (perfil usado × resultado) por peça do Topomural.
+
+## Publicação (05/10/2026)
+- Repositório **público** `henriquemattosesilva/curso-a1-mini` (público porque o Pages grátis exige).
+- **GitHub Pages:** https://henriquemattosesilva.github.io/curso-a1-mini/ (branch `main`, raiz).
+- Para atualizar: editar `index.html`, `git commit` e `git push`. O Pages republica sozinho em ~1 min.
+- O progresso/checklist fica no `localStorage` de cada aparelho (celular e PC não compartilham).
