@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Curso A1 Mini</title>
+<style>
+:root{
+  --bg:#f6f4ef; --bg2:#ffffff; --bg3:#ece8df; --tx:#1f1d1a; --tx2:#5b5650; --bd:#d9d3c7;
+  --ac:#d9531e; --ac2:#a83c10; --acbg:#fbe6da;
+  --ok:#2f8a4c; --okbg:#e2f3e7; --warn:#a86b00; --warnbg:#fdf2d6; --bad:#b83b3b; --badbg:#f8e1e1;
+  --info:#2d6aa8; --infobg:#e1ecf8; --a1:#2f8a4c; --topo:#d9531e;
+  --terra:#b9895a; --agua:#4f8fc9; --trilha:#d9531e;
+  --mono:ui-monospace,"Cascadia Code",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16181b; --bg2:#1f2226; --bg3:#2a2e33; --tx:#ebe8e2; --tx2:#a7a29a; --bd:#383d44;
+    --ac:#f07a45; --ac2:#ff9d6e; --acbg:#3a2216;
+    --ok:#5cc47d; --okbg:#1c3325; --warn:#e3ad3a; --warnbg:#3a2f14; --bad:#ec7474; --badbg:#3d1f1f;
+    --info:#6fa8e6; --infobg:#1a2a3d; --a1:#5cc47d; --topo:#f07a45;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16181b; --bg2:#1f2226; --bg3:#2a2e33; --tx:#ebe8e2; --tx2:#a7a29a; --bd:#383d44;
+  --ac:#f07a45; --ac2:#ff9d6e; --acbg:#3a2216;
+  --ok:#5cc47d; --okbg:#1c3325; --warn:#e3ad3a; --warnbg:#3a2f14; --bad:#ec7474; --badbg:#3d1f1f;
+  --info:#6fa8e6; --infobg:#1a2a3d; --a1:#5cc47d; --topo:#f07a45;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:16px}
+body{margin:0; background:var(--bg); color:var(--tx); font:16px/1.6 "Segoe UI",system-ui,sans-serif}
+a{color:var(--ac2)}
+code,.mono{font-family:var(--mono); font-size:.92em; background:var(--bg3); padding:1px 5px; border-radius:4px}
+.layout{display:grid; grid-template-columns:300px 1fr; min-height:100vh}
+.layout>div{min-width:0}
+nav.side{position:sticky; top:0; height:100vh; overflow-y:auto; background:var(--bg2); border-right:1px solid var(--bd); padding:18px 14px}
+.brand{font-weight:700; font-size:18px; display:flex; gap:10px; align-items:center; margin-bottom:4px}
+.sub{color:var(--tx2); font-size:13px; margin-bottom:14px}
+.prog{height:8px; background:var(--bg3); border-radius:99px; overflow:hidden; margin:6px 0 4px}
+.prog i{display:block; height:100%; width:0; background:var(--ac); transition:width .3s}
+.progtxt{font-size:12px; color:var(--tx2); margin-bottom:12px}
+nav.side ol{list-style:none; margin:0; padding:0}
+nav.side li.grp{font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--tx2); margin:12px 8px 4px}
+nav.side li a{display:flex; gap:8px; align-items:flex-start; padding:5px 8px; border-radius:7px; text-decoration:none; color:var(--tx); font-size:14px; line-height:1.35}
+nav.side li a:hover{background:var(--bg3)}
+nav.side li a.ativo{background:var(--acbg); color:var(--ac2); font-weight:600}
+nav.side .n{flex:none; width:22px; height:22px; border-radius:50%; background:var(--bg3); display:grid; place-items:center; font-size:11px; font-weight:700; color:var(--tx2)}
+nav.side li.feito .n{background:var(--ok); color:#fff}
+.tools{display:flex; gap:6px; margin-top:14px}
+.tools button{flex:1}
+button,.btn{font:inherit; font-size:14px; cursor:pointer; border:1px solid var(--bd); background:var(--bg2); color:var(--tx); border-radius:8px; padding:6px 12px}
+button:hover{border-color:var(--ac)}
+button.on{background:var(--ac); color:#fff; border-color:var(--ac)}
+main{padding:32px 48px 80px; max-width:1020px}
+section.mod{background:var(--bg2); border:1px solid var(--bd); border-radius:14px; padding:28px 32px; margin-bottom:28px}
+.kick{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--ac)}
+h1{font-size:30px; line-height:1.2; margin:4px 0 8px}
+h2{font-size:24px; line-height:1.25; margin:2px 0 14px}
+h3{font-size:18px; margin:26px 0 8px}
+h4{font-size:15.5px; margin:18px 0 6px}
+.lead{font-size:17px; color:var(--tx2)}
+.box{border-radius:10px; padding:12px 16px; margin:14px 0; border-left:4px solid}
+.box b:first-child{display:block; margin-bottom:2px}
+.dica{background:var(--okbg); border-color:var(--ok)}
+.aviso{background:var(--warnbg); border-color:var(--warn)}
+.erro{background:var(--badbg); border-color:var(--bad)}
+.nota{background:var(--infobg); border-color:var(--info)}
+.topo{background:var(--acbg); border-color:var(--ac)}
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0}
+.tri{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:14px 0}
+.card{border:1px solid var(--bd); border-radius:10px; padding:12px 16px; background:var(--bg)}
+.card h4{margin:0 0 6px}
+.card ul{margin:4px 0; padding-left:18px}
+.tag{display:inline-block; font-size:11px; font-weight:700; padding:1px 8px; border-radius:99px; color:#fff; vertical-align:middle; white-space:nowrap}
+.tag.t{background:var(--topo)} .tag.a{background:var(--a1)} .tag.c{background:var(--warn)} .tag.i{background:var(--info)}
+table{border-collapse:collapse; width:100%; margin:12px 0; font-size:14px}
+th,td{border-bottom:1px solid var(--bd); padding:7px 9px; text-align:left; vertical-align:top}
+th{background:var(--bg3); font-weight:600}
+td.k{font-weight:600; white-space:nowrap}
+td.k small{display:block; font-weight:400; color:var(--tx2); white-space:normal}
+td.v{font-family:var(--mono); font-size:13px; white-space:nowrap}
+.tbl{overflow-x:auto}
+.fig{background:var(--bg); border:1px solid var(--bd); border-radius:10px; padding:14px; margin:14px 0}
+.fig svg{display:block; max-width:100%; height:auto; margin:0 auto}
+.cap{font-size:13px; color:var(--tx2); margin-top:8px; text-align:center}
+.ctrl{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; margin-bottom:10px}
+.ctrl label{font-size:14px; display:flex; gap:6px; align-items:center}
+input[type=range]{accent-color:var(--ac); width:200px; max-width:100%}
+input[type=color]{width:34px; height:26px; border:1px solid var(--bd); border-radius:6px; padding:0; background:none}
+.stats{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
+.stat{background:var(--bg2); border:1px solid var(--bd); border-radius:8px; padding:6px 12px; font-size:13px}
+.stat b{font-size:18px; display:block; color:var(--ac2)}
+.steps{counter-reset:s; list-style:none; padding:0}
+.steps>li{counter-increment:s; position:relative; padding:4px 0 10px 40px}
+.steps>li::before{content:counter(s); position:absolute; left:0; top:4px; width:26px; height:26px; border-radius:50%; background:var(--ac); color:#fff; font-size:13px; font-weight:700; display:grid; place-items:center}
+.quiz{border-top:1px dashed var(--bd); margin-top:22px; padding-top:14px}
+.quiz h3{margin-top:0}
+.q{margin:12px 0 16px}
+.q p{margin:0 0 6px; font-weight:600}
+.q button{display:block; width:100%; text-align:left; margin:5px 0; white-space:normal}
+.q button.certo{background:var(--okbg); border-color:var(--ok)}
+.q button.errado{background:var(--badbg); border-color:var(--bad)}
+.q .exp{display:none; font-size:14px; color:var(--tx2); margin-top:6px}
+.q.resp .exp{display:block}
+.concl{display:flex; align-items:center; gap:10px; margin-top:18px; padding:10px 14px; background:var(--bg); border:1px solid var(--bd); border-radius:10px; font-weight:600; cursor:pointer; user-select:none}
+.concl input{width:18px; height:18px; accent-color:var(--ok)}
+details{border:1px solid var(--bd); border-radius:10px; margin:8px 0; background:var(--bg)}
+details summary{cursor:pointer; padding:10px 14px; font-weight:600}
+details[open] summary{border-bottom:1px solid var(--bd)}
+details .in{padding:10px 16px}
+details .in p{margin:6px 0}
+.busca{width:100%; font:inherit; padding:9px 12px; border:1px solid var(--bd); border-radius:8px; background:var(--bg2); color:var(--tx); margin-bottom:8px}
+.chk{padding-left:0}
+.chk li{list-style:none; margin:4px 0}
+.chk label{cursor:pointer}
+.chk input{accent-color:var(--ok); margin-right:8px}
+.parte{cursor:pointer}
+.parte:hover rect,.parte:hover circle,.parte:hover path{stroke:var(--ac); stroke-width:2.5}
+.parte.sel rect,.parte.sel circle,.parte.sel path{stroke:var(--ac); stroke-width:3}
+#infoParte{min-height:90px}
+.legenda{display:flex; flex-wrap:wrap; gap:8px 18px; font-size:13px; color:var(--tx2); margin:8px 0}
+.legenda span{display:inline-flex; gap:6px; align-items:center}
+.sw{display:inline-block; width:14px; height:14px; border-radius:3px; border:1px solid var(--bd)}
+kbd{font-family:var(--mono); font-size:12px; background:var(--bg3); border:1px solid var(--bd); border-bottom-width:2px; border-radius:4px; padding:0 5px}
+.menu-mob{display:none}
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr}
+  nav.side{position:fixed; inset:0 auto 0 0; width:300px; z-index:20; transform:translateX(-100%); transition:transform .25s}
+  nav.side.aberto{transform:none; box-shadow:0 0 30px rgba(0,0,0,.3)}
+  .menu-mob{display:block; position:sticky; top:0; z-index:10; background:var(--bg2); border-bottom:1px solid var(--bd); padding:10px 16px}
+  main{padding:16px}
+  section.mod{padding:18px 16px}
+  .duo,.tri{grid-template-columns:1fr}
+  h1{font-size:25px} h2{font-size:21px}
+}
+@media print{ nav.side,.menu-mob,.concl,.quiz,.tools{display:none} .layout{display:block} section.mod{break-inside:auto; border:none} }
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="side" id="side">
+  <div class="brand">
+    <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M2 25 L9 14 L13 19 L19 8 L28 25 Z" fill="var(--ac)"/><path d="M19 8 L22.5 14.5 L20 13.5 L17.5 15 Z" fill="var(--bg2)"/><rect x="1" y="25" width="28" height="3" rx="1" fill="var(--tx2)"/></svg>
+    Curso A1 Mini
+  </div>
+  <div class="sub">Bambu Lab A1 Mini + Bambu Studio, com foco nas peças do Topomural.</div>
+  <div class="prog"><i id="progbar"></i></div>
+  <div class="progtxt" id="progtxt"></div>
+  <ol id="toc"></ol>
+  <div class="tools">
+    <button id="btnTema" title="Alternar tema claro/escuro">Tema</button>
+    <button id="btnZerar" title="Apagar progresso">Zerar progresso</button>
+  </div>
+</nav>
+
+<div>
+<div class="menu-mob"><button id="btnMenu">☰ Módulos</button></div>
+<main id="conteudo">
+
+<!-- ================= 0 ================= -->
+<section class="mod" id="m0" data-titulo="Como usar este curso" data-grupo="Começo">
+  <div class="kick">Módulo 0</div>
+  <h1>Bambu Lab A1 Mini + Bambu Studio, do zero ao relevo bem impresso</h1>
+  <p class="lead">A A1 Mini automatiza quase tudo que na Ender 3 era trabalho manual: nivelamento, altura do bico, compensação de vibração e calibração de fluxo. O que continua nas suas mãos são <b>as decisões do fatiador</b>, e elas definem se o relevo sai bonito, rápido e forte. Por isso o curso passa a maior parte do tempo no Bambu Studio.</p>
+
+  <h3>O que mudou em relação à Ender 3</h3>
+  <div class="tbl"><table>
+    <tr><th></th><th>Ender 3 (a sua)</th><th>A1 Mini</th></tr>
+    <tr><td class="k">Nivelamento</td><td>papel nos 4 cantos + mapa (BLTouch)</td><td>automático, o próprio bico apalpa a mesa</td></tr>
+    <tr><td class="k">Altura do bico (Z-offset)</td><td>você acha na mão</td><td>automática, não existe ajuste</td></tr>
+    <tr><td class="k">Extrusor</td><td>bowden (motor longe do bico)</td><td>direto (motor em cima do bico): retração curta, menos fios</td></tr>
+    <tr><td class="k">Velocidade típica</td><td>50–80 mm/s</td><td>200–300 mm/s em PLA (limitada pelo derretimento, não pela máquina)</td></tr>
+    <tr><td class="k">Trocar bico</td><td>chave, bico quente, risco de espanar</td><td>hotend inteiro sai com uma trava, frio, em 1 minuto</td></tr>
+    <tr><td class="k">Fatiador</td><td>Cura / OrcaSlicer</td><td>Bambu Studio (o Orca é "primo": a mesma base)</td></tr>
+  </table></div>
+  <p>Se você chegou a ver o curso de fatiador anterior (pasta <code>curso-impressao-3d</code>), quase tudo vale: os nomes no Orca e no Bambu Studio são os mesmos. Este curso é <b>específico</b>: só A1 Mini, só Bambu Studio, e sempre pensando no hexágono de relevo, na moldura, nos ímãs e nas cores.</p>
+
+  <h3>Legenda usada no curso</h3>
+  <ul>
+    <li><span class="tag t">Topomural</span> conselho específico para as peças do gerador (relevo, moldura, encaixe, porta-medalhas).</li>
+    <li><span class="tag a">A1 Mini</span> algo que só vale para esta máquina.</li>
+    <li><span class="tag c">confira</span> detalhe que muda entre versões do Bambu Studio ou do firmware. O nome ou o lugar do botão pode estar um pouco diferente na sua tela.</li>
+  </ul>
+  <div class="box nota"><b>Sobre os nomes dos ajustes</b>O Bambu Studio pode estar em português, mas a tradução muda de versão para versão e nem sempre é boa. Por isso cada ajuste aparece com o <b>nome em inglês</b> (é o que você acha em fóruns e vídeos) e a explicação em português. Dica: o painel de processo tem uma <b>lupa de busca</b>. Digite parte do nome e ele leva você direto ao campo.</div>
+  <div class="box aviso"><b>Sobre os números</b>Todos os valores são <b>pontos de partida</b> testados pela comunidade e coerentes com os perfis da Bambu. Onde eu estimo, aparece escrito "estimativa". Quem dá a palavra final é a sua impressão de teste e o módulo de Calibração.</div>
+
+  <h3>Rota sugerida para a primeira semana</h3>
+  <ol class="steps">
+    <li><b>Dia 1:</b> módulos 1 a 4. Desembalar, ligar, deixar a calibração inicial rodar, carregar o filamento e imprimir um modelo de teste pronto.</li>
+    <li><b>Dia 2:</b> módulos 5 e 6. Abrir o Bambu Studio, fatiar um cubo e um relevo pequeno, explorar a pré-visualização.</li>
+    <li><b>Dias 3 e 4:</b> módulos 7 a 12, com o Bambu Studio aberto ao lado. Mude um ajuste, refatie, veja o tempo e a pré-visualização mudarem.</li>
+    <li><b>Dia 5:</b> módulos 13 a 15. Imprimir o primeiro hexágono do Topomural com a receita.</li>
+    <li><b>Dia 6:</b> módulos 16 e 17. Moldura com ímãs (pausa) e um relevo com faixas de cor.</li>
+    <li><b>Depois:</b> manutenção, entupimento e diagnóstico ficam de consulta. Volte quando precisar.</li>
+  </ol>
+  <h3>O mapa do processo</h3>
+  <div class="fig">
+    <svg viewBox="0 0 780 110" role="img" aria-label="Fluxo: gerador Topomural, Bambu Studio, envio por Wi-Fi, A1 Mini, peça">
+      <defs><marker id="seta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--tx2)"/></marker></defs>
+      <g font-size="13" text-anchor="middle" fill="var(--tx)">
+        <rect x="5" y="25" width="130" height="58" rx="10" fill="var(--bg2)" stroke="var(--bd)"/><text x="70" y="50" font-weight="700">Gerador</text><text x="70" y="68" fill="var(--tx2)" font-size="11">STL / OBJ colorido</text>
+        <rect x="175" y="25" width="150" height="58" rx="10" fill="var(--acbg)" stroke="var(--ac)"/><text x="250" y="50" font-weight="700" fill="var(--ac2)">Bambu Studio</text><text x="250" y="68" fill="var(--tx2)" font-size="11">fatiar = decidir tudo</text>
+        <rect x="365" y="25" width="120" height="58" rx="10" fill="var(--bg2)" stroke="var(--bd)"/><text x="425" y="50" font-weight="700">Wi-Fi</text><text x="425" y="68" fill="var(--tx2)" font-size="11">ou microSD</text>
+        <rect x="525" y="25" width="110" height="58" rx="10" fill="var(--bg2)" stroke="var(--bd)"/><text x="580" y="50" font-weight="700">A1 Mini</text><text x="580" y="68" fill="var(--tx2)" font-size="11">calibra e imprime</text>
+        <rect x="675" y="25" width="100" height="58" rx="10" fill="var(--bg2)" stroke="var(--bd)"/><text x="725" y="50" font-weight="700">Peça</text><text x="725" y="68" fill="var(--tx2)" font-size="11">montar e vender</text>
+      </g>
+      <g stroke="var(--tx2)" stroke-width="2" marker-end="url(#seta)"><line x1="137" y1="54" x2="171" y2="54"/><line x1="327" y1="54" x2="361" y2="54"/><line x1="487" y1="54" x2="521" y2="54"/><line x1="637" y1="54" x2="671" y2="54"/></g>
+    </svg>
+  </div>
+</section>
+
+<!-- ================= 1 ================= -->
+<section class="mod" id="m1" data-titulo="A A1 Mini por dentro" data-grupo="A impressora" data-quiz="1">
+  <div class="kick">Módulo 1</div>
+  <h2>A A1 Mini por dentro: as partes e o que cada uma faz</h2>
+  <p>A A1 Mini é uma impressora <b>"cama que anda"</b> (a mesa vai e volta no eixo Y), com uma <b>coluna única</b> de um lado que sobe e desce o braço (eixo Z), e a cabeça de impressão correndo no braço (eixo X). Clique nas partes do desenho.</p>
+  <div class="fig">
+    <svg id="anatomia" viewBox="0 0 640 400" role="img" aria-label="Desenho esquemático da A1 Mini com partes clicáveis">
+      <g fill="var(--bg2)" stroke="var(--tx2)" stroke-width="1.5" font-size="12">
+        <g class="parte" data-p="base"><rect x="60" y="330" width="500" height="44" rx="8" fill="var(--bg3)"/></g>
+        <g class="parte" data-p="mesa"><rect x="190" y="300" width="300" height="22" rx="4" fill="var(--bg3)"/></g>
+        <g class="parte" data-p="placa"><rect x="196" y="292" width="288" height="9" rx="2" fill="var(--ac)" opacity=".85"/></g>
+        <g class="parte" data-p="coluna"><rect x="80" y="40" width="46" height="290" rx="6" fill="var(--bg3)"/></g>
+        <g class="parte" data-p="fuso"><rect x="98" y="60" width="10" height="250" rx="3" fill="var(--tx2)" opacity=".5"/></g>
+        <g class="parte" data-p="braco"><rect x="126" y="130" width="420" height="26" rx="5" fill="var(--bg3)"/></g>
+        <g class="parte" data-p="cabeca"><rect x="320" y="112" width="74" height="96" rx="8" fill="var(--bg2)"/></g>
+        <g class="parte" data-p="hotend"><path d="M346 208 h22 v22 h-6 l-5 10 l-5 -10 h-6 z" fill="var(--tx2)" opacity=".7"/></g>
+        <g class="parte" data-p="ventoinha"><circle cx="380" cy="190" r="10" fill="var(--bg3)"/></g>
+        <g class="parte" data-p="cortador"><rect x="322" y="116" width="14" height="22" rx="3" fill="var(--warn)" opacity=".7"/></g>
+        <g class="parte" data-p="carretel"><circle cx="103" cy="22" r="18" fill="var(--bg3)"/><circle cx="103" cy="22" r="5" fill="var(--tx2)"/></g>
+        <g class="parte" data-p="ptfe"><path d="M118 28 C 250 10, 340 40, 357 112" fill="none" stroke-width="4" stroke="var(--info)"/></g>
+        <g class="parte" data-p="tela"><rect x="470" y="338" width="70" height="30" rx="4" fill="var(--tx)"/></g>
+        <g class="parte" data-p="purga"><rect x="130" y="300" width="44" height="28" rx="4" fill="var(--bg3)"/></g>
+        <g class="parte" data-p="sd"><rect x="74" y="346" width="26" height="8" rx="2" fill="var(--tx2)"/></g>
+        <g class="parte" data-p="bus"><rect x="130" y="186" width="24" height="16" rx="3" fill="var(--info)" opacity=".7"/></g>
+      </g>
+      <g font-size="11.5" fill="var(--tx2)" pointer-events="none">
+        <text x="575" y="360">base</text><text x="500" y="314">mesa (Y)</text><text x="500" y="293">placa PEI</text>
+        <text x="20" y="200">coluna</text><text x="20" y="214">(Z)</text><text x="470" y="125">braço (X)</text>
+        <text x="410" y="140">cabeça</text><text x="372" y="252">hotend / bico</text><text x="396" y="186">ventoinha</text>
+        <text x="250" y="100">cortador</text><text x="130" y="16">carretel</text><text x="230" y="44">tubo PTFE</text>
+        <text x="472" y="384">tela</text><text x="130" y="296">purga</text><text x="66" y="392">microSD</text><text x="158" y="198">porta AMS</text>
+      </g>
+      <line x1="300" y1="104" x2="326" y2="122" stroke="var(--tx2)" pointer-events="none"/>
+    </svg>
+    <div class="cap">Desenho esquemático (posições aproximadas, sem escala). Clique numa parte.</div>
+    <div class="box nota" id="infoParte"><b>Clique numa parte</b>A descrição aparece aqui.</div>
+  </div>
+
+  <h3>Ficha técnica que importa para você</h3>
+  <div class="tbl"><table>
+    <tr><th>Item</th><th>Valor</th><th>O que significa na prática</th></tr>
+    <tr><td class="k">Volume de impressão</td><td class="v">180 × 180 × 180 mm</td><td>O hexágono de 124 mm cabe com folga. A moldura (124 + 2 × 12 de borda ≈ 150 mm) também. Relevo maior que ~175 mm em qualquer direção não cabe: corte em partes. <span class="tag t">Topomural</span></td></tr>
+    <tr><td class="k">Bico padrão</td><td class="v">0,4 mm aço inox</td><td>Existem 0,2 / 0,6 / 0,8 e versões de aço endurecido (para filamento com fibra).</td></tr>
+    <tr><td class="k">Temperatura máx. do bico</td><td class="v">300 °C</td><td>Sobra muito para PLA (210–230 °C) e PETG (230–260 °C).</td></tr>
+    <tr><td class="k">Temperatura máx. da mesa</td><td class="v">80 °C</td><td>PLA e PETG ok. ABS/ASA não são recomendados: máquina aberta, sem câmara fechada.</td></tr>
+    <tr><td class="k">Velocidade / aceleração máx.</td><td class="v">500 mm/s · 10.000 mm/s²</td><td>Números de pico. Quem limita de verdade é quanto plástico o bico derrete por segundo (módulo 9).</td></tr>
+    <tr><td class="k">Extrusor</td><td class="v">direto, 1,75 mm</td><td>Retração curta (~0,8 mm), menos fios, imprime TPU flexível.</td></tr>
+    <tr><td class="k">Automação</td><td>nivelamento, Z-offset, compensação de vibração, cancelamento de ruído do motor, calibração de fluxo (Flow Dynamics)</td><td>Você não nivela nada à mão. A calibração inicial roda sozinha e leva ~15–20 min.</td></tr>
+    <tr><td class="k">Sensores</td><td>fim de filamento, detecção de entupimento/força no bico <span class="tag c">confira</span></td><td>Acabou o filamento, ela pausa e espera. Não precisa vigiar o carretel no fim.</td></tr>
+    <tr><td class="k">Conexão</td><td>Wi-Fi 2,4 GHz, microSD, app Bambu Handy</td><td>Envia do PC pela rede; acompanha pelo celular.</td></tr>
+    <tr><td class="k">Multicor</td><td>porta para AMS Lite (ou BMCU, alternativa da comunidade)</td><td>Hoje: 1 cor + trocas manuais (módulo 17). Depois: até 4 cores automáticas.</td></tr>
+  </table></div>
+
+  <h3>Os três movimentos</h3>
+  <div class="tri">
+    <div class="card"><h4>X: esquerda/direita</h4>A cabeça corre no braço. É o eixo mais leve e rápido.</div>
+    <div class="card"><h4>Y: frente/trás</h4>A mesa inteira vai e volta. Por isso peça alta e fina balança: a mesa a sacode. Relevo é baixo e largo, então não sofre com isso.</div>
+    <div class="card"><h4>Z: sobe/desce</h4>A coluna sobe o braço inteiro a cada camada. Um fuso (barra rosqueada) faz esse movimento: é a peça que pede graxa de tempos em tempos.</div>
+  </div>
+  <div class="box topo"><b>Por que a A1 Mini combina com o Topomural</b>Relevo é uma peça baixa, larga e plana embaixo: o pior inimigo (descolar da mesa) é pequeno, e as automações garantem a primeira camada igual em toda a área. O que sobra para você é escolher camada, paredes, preenchimento e costura, que é exatamente o que este curso ensina.</div>
+</section>
+
+<!-- ================= 2 ================= -->
+<section class="mod" id="m2" data-titulo="O que comprar junto" data-grupo="A impressora" data-quiz="2">
+  <div class="kick">Módulo 2</div>
+  <h2>O que comprar junto (e o que não precisa)</h2>
+  <p>Como você ainda vai comprar, vale montar o "kit" de uma vez e evitar frete duas vezes.</p>
+  <div class="tbl"><table>
+    <tr><th>Item</th><th>Prioridade</th><th>Por quê</th></tr>
+    <tr><td class="k">Filamento PLA Matte (fosco), 2 a 3 cores</td><td>essencial</td><td>O fosco <b>esconde as linhas de camada</b>, e no relevo isso é ouro: a encosta fica com cara de maquete, não de "escada brilhante". Sugestão de cores para começar: um tom de terra/areia, um branco ou cinza claro e um azul para água. <span class="tag t">Topomural</span></td></tr>
+    <tr><td class="k">Filamento PLA Basic (brilho normal)</td><td>útil</td><td>Mais barato, bom para testes, encaixes e peças escondidas.</td></tr>
+    <tr><td class="k">Hotend 0,2 mm da série A1</td><td>quando for usar</td><td>Para texto pequeno e detalhes finos. Atenção: precisa ser o hotend <b>da série A1</b> (não serve o da P1/X1). Módulo 18.</td></tr>
+    <tr><td class="k">Hotend 0,4 reserva</td><td>recomendado</td><td>Se entupir, troca em 1 minuto e você desentope o outro com calma. Vale mais do que qualquer ferramenta de desentupir.</td></tr>
+    <tr><td class="k">Álcool isopropílico (99%) + pano sem fiapo</td><td>essencial</td><td>Limpeza rápida da placa entre impressões.</td></tr>
+    <tr><td class="k">Detergente neutro</td><td>essencial</td><td>Limpeza "de verdade" da placa PEI (água morna + detergente). Resolve 90% dos "não gruda".</td></tr>
+    <tr><td class="k">Paquímetro digital</td><td>essencial</td><td>Medir ímãs, encaixes, folgas e a peça impressa. Sem medir, ajuste de encaixe vira chute.</td></tr>
+    <tr><td class="k">Alicate de corte rente (flush cutter)</td><td>essencial</td><td>Cortar a ponta do filamento em diagonal e rebarbas.</td></tr>
+    <tr><td class="k">Espátula plástica / estilete de rebarba (deburring)</td><td>útil</td><td>Tirar a "orelha" da primeira camada (pé de elefante) e rebarba nos encaixes.</td></tr>
+    <tr><td class="k">Cola instantânea (CA, tipo Super Bonder)</td><td>útil</td><td>Uma gota no fundo do vão segura o ímã durante a pausa (módulo 16).</td></tr>
+    <tr><td class="k">Ímãs de neodímio Ø6×2 e Ø4×1 mm</td><td><span class="tag t">Topomural</span></td><td>As medidas que o gerador usa hoje (geladeira na moldura: Ø6×2; encaixe relevo/moldura: Ø4×1). Compre com sobra: eles quebram e "pulam".</td></tr>
+    <tr><td class="k">Caixa seca com sílica / secador de filamento</td><td>recomendado</td><td>PLA aberto pega umidade. Estalos, fios e superfície áspera quase sempre são filamento úmido.</td></tr>
+    <tr><td class="k">Cartão microSD (até 32 GB, classe 10)</td><td>recomendado</td><td>Timelapse, impressão sem nuvem e atualização de firmware offline. <span class="tag c">confira</span> se já vem na caixa.</td></tr>
+    <tr><td class="k">Graxa (a do kit) </td><td>vem na caixa</td><td>Para o fuso Z. Guarde o saquinho.</td></tr>
+    <tr><td class="k">Placa extra lisa (Smooth PEI)</td><td>opcional</td><td>A placa que vem é texturizada: a face de baixo da peça sai fosca e granulada. Lisa dá face espelhada. Para o relevo, a face de baixo é o fundo do quadro, então a texturizada serve bem.</td></tr>
+  </table></div>
+  <div class="box aviso"><b>Não precisa</b>Cola em bastão ou spray para PLA (a PEI texturizada segura sozinha), kit de nivelamento, BLTouch, upgrades de extrusor. Tudo isso era mundo Ender.</div>
+  <div class="box nota"><b>AMS Lite × BMCU</b>O AMS Lite é o trocador oficial de 4 cores. O BMCU é um projeto da comunidade que a impressora enxerga como um AMS Lite, por bem menos. Funciona, mas não é oficial: firmware novo pode mudar algo e a Bambu não dá suporte. O módulo 17 explica o que muda no fatiador quando ele chegar.</div>
+</section>
+
+<!-- ================= 3 ================= -->
+<section class="mod" id="m3" data-titulo="Instalação e primeira ligação" data-grupo="A impressora" data-quiz="3">
+  <div class="kick">Módulo 3</div>
+  <h2>Instalação e primeira ligação</h2>
+  <p>A caixa traz um guia rápido ilustrado e a tela da impressora conduz o resto. O que segue é o roteiro com os pontos onde iniciantes costumam tropeçar.</p>
+  <h3>Montagem física</h3>
+  <ol class="steps">
+    <li><b>Escolha o lugar.</b> Superfície firme (a mesa anda rápido e a máquina "dança" em mesa bamba), espaço atrás para a mesa recuar e longe de janela/ar-condicionado. Deixe ~10 cm livres atrás e dos lados.</li>
+    <li><b>Tire todas as proteções.</b> Espumas, fitas e as <b>abraçadeiras (enforca-gato) que prendem a cabeça e a mesa</b> para o transporte. Siga o guia da caixa: se ficar uma trava, a calibração falha com barulho de motor forçando. <span class="tag c">confira</span> no guia se o seu lote tem algum parafuso de transporte.</li>
+    <li><b>Monte a tela e o suporte do carretel</b> no alto da coluna. O tubo PTFE (branco) liga o carretel à cabeça.</li>
+    <li><b>Encaixe a placa PEI</b> na mesa: ela é magnética e tem dois pinos/recortes atrás que alinham. Tem de ficar plana, sem nada embaixo (uma migalha embaixo vira um morro na primeira camada).</li>
+    <li><b>Ligue na tomada.</b> A fonte é interna e bivolt automática na maioria dos modelos <span class="tag c">confira</span> na etiqueta.</li>
+  </ol>
+  <h3>Assistente da tela</h3>
+  <ol class="steps">
+    <li><b>Idioma e região.</b></li>
+    <li><b>Wi-Fi:</b> a impressora só enxerga redes <b>2,4 GHz</b>. Se o seu roteador junta 2,4 e 5 GHz no mesmo nome e ela não conecta, crie uma rede 2,4 separada (no TP-Link: app Tether).</li>
+    <li><b>Vincular a conta:</b> instale o app <b>Bambu Handy</b> no celular, crie a conta Bambu (a mesma que você vai usar no Bambu Studio) e escaneie o QR da tela.</li>
+    <li><b>Atualizar firmware</b> quando oferecer. Firmware novo costuma melhorar calibração e corrigir erros.</li>
+    <li><b>Calibração inicial:</b> ela faz sozinha a compensação de vibração (barulho "musical" estranho é normal), o cancelamento de ruído dos motores, o nivelamento da mesa e a altura do bico. Leva uns 15–20 minutos. Não mexa nem encoste.</li>
+  </ol>
+  <div class="box dica"><b>Nuvem × modo LAN</b>Por padrão a impressão vai pela nuvem da Bambu (funciona de qualquer lugar, com câmera no app). Existe o <b>modo só LAN</b> (LAN Only), que não passa pela internet, mas desliga o app fora de casa. Para começar, fique no padrão.</div>
+
+  <h3>A tela da impressora</h3>
+  <p>A tela é pequena e tem poucos menus. Os que você vai usar <span class="tag c">confira</span> (os ícones mudam com o firmware):</p>
+  <div class="tbl"><table>
+    <tr><th>Menu</th><th>Para quê</th></tr>
+    <tr><td class="k">Início / status</td><td>Progresso, tempo restante, camada, temperaturas, pausar e parar.</td></tr>
+    <tr><td class="k">Controle</td><td>Mover eixos, mandar para a origem (home), aquecer bico e mesa, ligar ventoinhas.</td></tr>
+    <tr><td class="k">Filamento</td><td>Carregar (Load), descarregar (Unload), informar tipo e cor do carretel externo, extrudar um pouco.</td></tr>
+    <tr><td class="k">Arquivos</td><td>Impressões do microSD e histórico.</td></tr>
+    <tr><td class="k">Ajustes</td><td>Wi-Fi, modo LAN, calibração (refazer toda ou parte), <b>tipo/diâmetro do bico</b>, firmware, som, idioma.</td></tr>
+  </table></div>
+
+  <h3>Primeira impressão</h3>
+  <p>Antes de mexer em qualquer ajuste, imprima algo pronto com o perfil padrão: um modelo da <b>MakerWorld</b> (o site de modelos da Bambu, integrado ao Bambu Studio e ao app) com perfil "A1 mini". Se sair bonito, a máquina está boa e qualquer problema futuro vem do arquivo ou dos ajustes, não dela.</p>
+  <div class="box aviso"><b>Fique perto nos primeiros 10 minutos</b>Sempre. A primeira camada decide a impressão. Na A1 Mini ela quase nunca falha, mas é quando falha que você aprende o que olhar.</div>
+</section>
+
+<!-- ================= 4 ================= -->
+<section class="mod" id="m4" data-titulo="Filamento: carregar, trocar, secar" data-grupo="A impressora" data-quiz="4">
+  <div class="kick">Módulo 4</div>
+  <h2>Filamento: carregar pela primeira vez, trocar e guardar</h2>
+  <h3>Carregar (Load) pela primeira vez</h3>
+  <ol class="steps">
+    <li>Coloque o carretel no suporte de modo que o fio <b>saia por baixo/na direção do tubo</b> sem fazer curva fechada. Nunca solte a ponta: o fio se enrola em si mesmo e dá nó no carretel (é a causa nº 1 de "parou de puxar" no meio da impressão).</li>
+    <li><b>Corte a ponta em diagonal</b> (45°) com o alicate, e endireite os primeiros ~10 cm com os dedos. Ponta torta ou amassada enrosca dentro da cabeça.</li>
+    <li>Na tela: <b>Filamento → carretel externo → escolha o tipo</b> (PLA) e a cor. O tipo define a temperatura que ela usa para carregar.</li>
+    <li>Toque em <b>Load / Carregar</b>. O bico aquece.</li>
+    <li>Empurre o fio pelo tubo PTFE até sentir que <b>as engrenagens da cabeça puxaram</b>. Ela empurra até o bico e solta um pouco de plástico na área de purga.</li>
+    <li>Confira se saiu plástico <b>na cor nova e limpo</b>. Se ainda sair misturado, use "Extrudar" mais um pouco.</li>
+  </ol>
+  <h3>Descarregar (Unload)</h3>
+  <ol class="steps">
+    <li>Na tela: <b>Filamento → Unload / Descarregar</b>. O bico aquece, a máquina corta o fio no <b>cortador</b> da cabeça e recua.</li>
+    <li>Puxe o fio de volta pelo tubo, do lado do carretel, e <b>prenda a ponta</b> no furinho da lateral do carretel antes de guardar.</li>
+  </ol>
+  <div class="box nota"><b>Por que ela corta o fio</b>Na A1 a cabeça tem uma lâmina acionada por uma alavanca que bate no lado da máquina. Cortar evita que a ponta "esmagada e grossa" fique presa no caminho. Por isso, quando você puxa o fio de volta, ele sai com a ponta cortada reta.</div>
+  <h3>Trocar de cor no meio de uma impressão</h3>
+  <p>O processo é: <b>pausa → Unload → Load da nova cor → purgar até a cor ficar limpa → limpar o bico → continuar</b>. O passo a passo completo, com como programar a pausa no Bambu Studio, está no módulo 17.</p>
+
+  <h3>Umidade: o inimigo invisível</h3>
+  <p>PLA absorve água do ar em dias ou semanas. Filamento úmido faz: <b>estalinhos</b> ao imprimir, <b>fios de teia</b>, superfície áspera e peça mais fraca.</p>
+  <ul>
+    <li>Guarde em saco ziplock ou caixa com sílica quando não estiver usando.</li>
+    <li>Secar: secador próprio ou forno elétrico a <b>45–50 °C por 4–6 h</b> para PLA (forno a gás e a mesa da impressora não são confiáveis). Nunca passe de ~55 °C com PLA: amolece e gruda no carretel.</li>
+  </ul>
+
+  <h3>O que tem no rótulo do carretel</h3>
+  <ul>
+    <li><b>Diâmetro:</b> sempre 1,75 mm.</li>
+    <li><b>Temperatura sugerida:</b> faixa (ex.: 190–230 °C). O perfil do Bambu Studio já está no meio dessa faixa.</li>
+    <li><b>Marca:</b> filamento Bambu tem perfil próprio pronto ("Bambu PLA Matte"). Outra marca: use "Generic PLA" e, se quiser perfeição, calibre (módulo 19).</li>
+  </ul>
+</section>
+
+<!-- ================= 5 ================= -->
+<section class="mod" id="m5" data-titulo="Bambu Studio: o tour" data-grupo="Bambu Studio" data-quiz="5">
+  <div class="kick">Módulo 5</div>
+  <h2>Bambu Studio: o tour pela tela</h2>
+  <h3>As abas de cima</h3>
+  <div class="tbl"><table>
+    <tr><th>Aba</th><th>O que você faz nela</th></tr>
+    <tr><td class="k">Preparar (Prepare)</td><td>Montar a placa: importar, posicionar, girar, escolher perfis e ajustes. Onde você passa 80% do tempo.</td></tr>
+    <tr><td class="k">Pré-visualizar (Preview)</td><td>Ver o resultado do fatiamento camada por camada, tempo, gasto de filamento, inserir pausas e trocas de cor.</td></tr>
+    <tr><td class="k">Dispositivo (Device)</td><td>Câmera, temperaturas, pausar/parar, mover eixos, ver o microSD. Um "controle remoto" da impressora.</td></tr>
+    <tr><td class="k">Projeto (Project)</td><td>Notas e fotos do projeto (usado para publicar na MakerWorld). Pode ignorar.</td></tr>
+  </table></div>
+
+  <h3>O painel da esquerda: quatro perfis</h3>
+  <div class="fig">
+    <svg viewBox="0 0 720 210" role="img" aria-label="Os quatro perfis do Bambu Studio">
+      <g font-size="13" fill="var(--tx)">
+        <rect x="10" y="10" width="160" height="190" rx="10" fill="var(--bg2)" stroke="var(--bd)"/>
+        <text x="90" y="34" text-anchor="middle" font-weight="700">Impressora</text>
+        <text x="90" y="58" text-anchor="middle" font-size="11.5" fill="var(--tx2)">"Bambu Lab A1 mini</text><text x="90" y="74" text-anchor="middle" font-size="11.5" fill="var(--tx2)">0.4 nozzle"</text>
+        <text x="90" y="110" text-anchor="middle" font-size="11.5">bico, volume,</text><text x="90" y="126" text-anchor="middle" font-size="11.5">retração, G-code</text>
+        <text x="90" y="170" text-anchor="middle" font-size="11" fill="var(--tx2)">troca: quando trocar o bico</text>
+
+        <rect x="190" y="10" width="160" height="190" rx="10" fill="var(--bg2)" stroke="var(--bd)"/>
+        <text x="270" y="34" text-anchor="middle" font-weight="700">Placa</text>
+        <text x="270" y="58" text-anchor="middle" font-size="11.5" fill="var(--tx2)">"Textured PEI Plate"</text>
+        <text x="270" y="110" text-anchor="middle" font-size="11.5">muda a temperatura</text><text x="270" y="126" text-anchor="middle" font-size="11.5">da mesa</text>
+        <text x="270" y="170" text-anchor="middle" font-size="11" fill="var(--tx2)">tem de bater com a real!</text>
+
+        <rect x="370" y="10" width="160" height="190" rx="10" fill="var(--bg2)" stroke="var(--bd)"/>
+        <text x="450" y="34" text-anchor="middle" font-weight="700">Filamento</text>
+        <text x="450" y="58" text-anchor="middle" font-size="11.5" fill="var(--tx2)">"Bambu PLA Matte"</text>
+        <text x="450" y="110" text-anchor="middle" font-size="11.5">temperatura, ventoinha,</text><text x="450" y="126" text-anchor="middle" font-size="11.5">fluxo, vel. volumétrica</text>
+        <text x="450" y="170" text-anchor="middle" font-size="11" fill="var(--tx2)">troca: a cada material</text>
+
+        <rect x="550" y="10" width="160" height="190" rx="10" fill="var(--acbg)" stroke="var(--ac)"/>
+        <text x="630" y="34" text-anchor="middle" font-weight="700" fill="var(--ac2)">Processo</text>
+        <text x="630" y="58" text-anchor="middle" font-size="11.5" fill="var(--tx2)">"0.20mm Standard"</text>
+        <text x="630" y="96" text-anchor="middle" font-size="11.5">Qualidade · Força</text><text x="630" y="112" text-anchor="middle" font-size="11.5">Velocidade · Suporte</text><text x="630" y="128" text-anchor="middle" font-size="11.5">Multimaterial · Outros</text>
+        <text x="630" y="170" text-anchor="middle" font-size="11" fill="var(--tx2)">troca: a cada peça</text>
+      </g>
+    </svg>
+    <div class="cap">A regra: <b>o que é do material fica no filamento; o que é da peça fica no processo</b>.</div>
+  </div>
+  <div class="box erro"><b>Erro clássico</b>Placa errada no fatiador. Se você usar a placa lisa e o perfil disser texturizada (ou o contrário), a temperatura da mesa sai diferente do ideal. A impressora até avisa se a placa tem código, mas confira sempre.</div>
+
+  <h3>Global × Objetos e o modo avançado</h3>
+  <ul>
+    <li>No topo do painel de processo há <b>Global</b> e <b>Objetos</b>. Global vale para tudo na placa. Em Objetos você dá a uma peça específica um ajuste diferente (ex.: a moldura com 4 paredes e o relevo com 2, na mesma placa).</li>
+    <li>O interruptor <b>Avançado</b> (Advanced) mostra todos os ajustes. Ligue: este curso fala de vários que só aparecem com ele.</li>
+    <li>Ajuste modificado fica com o valor <b>em laranja</b> e aparece uma setinha para voltar ao padrão do perfil.</li>
+    <li><b>Salvar perfil:</b> o ícone de disquete ao lado do nome do processo. Crie os seus ("Topomural Relevo 0.12", "Topomural Moldura") em vez de mexer no padrão toda vez.</li>
+  </ul>
+
+  <h3>Os perfis de processo prontos (bico 0,4)</h3>
+  <div class="tbl"><table>
+    <tr><th>Perfil</th><th>Camada</th><th>Uso</th><th>Tempo relativo (estimativa)</th></tr>
+    <tr><td class="k">0.08mm Extra Fine</td><td class="v">0,08</td><td>miniaturas, só se precisar mesmo</td><td>~2,5×</td></tr>
+    <tr><td class="k">0.12mm Fine</td><td class="v">0,12</td><td>relevo com encostas suaves, texto em cima</td><td>~1,7×</td></tr>
+    <tr><td class="k">0.16mm Optimal</td><td class="v">0,16</td><td>bom equilíbrio para relevo</td><td>~1,25×</td></tr>
+    <tr><td class="k">0.20mm Standard</td><td class="v">0,20</td><td>padrão: moldura, encaixes, porta-medalhas</td><td>1× (referência)</td></tr>
+    <tr><td class="k">0.24mm Draft</td><td class="v">0,24</td><td>testes rápidos de encaixe</td><td>~0,85×</td></tr>
+    <tr><td class="k">0.28mm Extra Draft</td><td class="v">0,28</td><td>rascunho</td><td>~0,75×</td></tr>
+  </table></div>
+  <p>O "tempo relativo" não cai na mesma proporção da camada porque parte do tempo é movimento, troca de camada e paredes. Os perfis também mudam velocidades e outros ajustes, não só a camada.</p>
+
+  <h3>Fatiar e enviar</h3>
+  <ol class="steps">
+    <li><b>Fatiar placa</b> (Slice plate) no canto de cima, à direita. Vai para a Pré-visualização com tempo e gramas.</li>
+    <li><b>Imprimir placa</b> (Print plate) abre a janela de envio: escolhe a impressora e as opções.</li>
+    <li>Opções do envio: <b>Nivelamento da mesa</b> (Bed leveling) e <b>Calibração de fluxo</b> (Flow Dynamics Calibration). Deixe ligadas/automáticas no começo. <b>Timelapse</b> grava um vídeo (precisa do microSD).</li>
+    <li>Também dá para <b>Exportar G-code / .gcode.3mf</b> e levar no microSD, se a rede falhar.</li>
+  </ol>
+  <h3>Atalhos que economizam tempo</h3>
+  <div class="tbl"><table>
+    <tr><th>Tecla</th><th>Ação</th><th>Tecla</th><th>Ação</th></tr>
+    <tr><td><kbd>Ctrl</kbd>+<kbd>I</kbd></td><td>importar arquivo</td><td><kbd>A</kbd></td><td>arranjar tudo automaticamente</td></tr>
+    <tr><td><kbd>M</kbd> / <kbd>R</kbd> / <kbd>S</kbd></td><td>mover / girar / escala</td><td><kbd>F</kbd></td><td>deitar numa face</td></tr>
+    <tr><td><kbd>C</kbd></td><td>ferramenta de corte</td><td><kbd>Ctrl</kbd>+<kbd>R</kbd></td><td>fatiar</td></tr>
+    <tr><td><kbd>0</kbd>–<kbd>6</kbd></td><td>vistas (iso, cima, baixo, frente...)</td><td><kbd>Del</kbd></td><td>apagar objeto</td></tr>
+  </table></div>
+  <p><span class="tag c">confira</span> No menu Ajuda há a lista completa de atalhos da sua versão.</p>
+</section>
+
+<!-- ================= 6 ================= -->
+<section class="mod" id="m6" data-titulo="Ferramentas da placa" data-grupo="Bambu Studio" data-quiz="6">
+  <div class="kick">Módulo 6</div>
+  <h2>Ferramentas da placa: importar, posicionar e modificar</h2>
+  <h3>Importar as peças do gerador</h3>
+  <div class="tbl"><table>
+    <tr><th>Arquivo do gerador</th><th>Como abre no Bambu Studio</th><th>Use quando</th></tr>
+    <tr><td class="k">STL (uma peça)</td><td>uma cor, malha simples</td><td>Você vai imprimir em 1 cor ou trocar por camada (faixas). <b>É o mais simples para começar.</b></td></tr>
+    <tr><td class="k">OBJ colorido (Peça Única)</td><td>Pergunta quantas cores usar e associa cada cor da malha a um filamento.</td><td>Quando tiver AMS/BMCU. Sem ele, ao abrir, você pode juntar tudo em uma cor.</td></tr>
+    <tr><td class="k">Zip com peças separadas</td><td>Cada peça vira um objeto (relevo, moldura, grelha...).</td><td>Imprimir cada peça na cor dela, em placas ou momentos diferentes.</td></tr>
+  </table></div>
+  <div class="box topo"><b>Uma peça por cor, sem AMS</b>A forma mais limpa de ter cor sem trocador é <b>peças separadas</b>: moldura em uma cor, relevo em outra, grelha do porta-medalhas em outra. Cada placa é uma cor, sem pausa nem mistura. O relevo em si, com água e trilha de cores diferentes, fica para as trocas por camada (módulo 17) ou para o BMCU.</div>
+
+  <h3>As ferramentas da barra de cima (área de montagem)</h3>
+  <div class="tbl"><table>
+    <tr><th>Ferramenta</th><th>O que faz</th><th>Uso no Topomural</th></tr>
+    <tr><td class="k">Mover / Girar / Escala</td><td>Posicionar com o mouse ou digitando números exatos.</td><td>Nunca escale a peça do gerador: o tamanho dela é a medida da moldura e dos ímãs. Mude no gerador.</td></tr>
+    <tr><td class="k">Deitar na face (Lay on face)</td><td>Clica numa face e ela vira a base.</td><td>O relevo já vem com a base para baixo. Útil para a gravata do encaixe e peças avulsas.</td></tr>
+    <tr><td class="k">Auto-orientar</td><td>O programa escolhe a posição que pede menos suporte.</td><td>Evite no relevo: ele pode "deitar" a peça. A orientação certa é base na mesa.</td></tr>
+    <tr><td class="k">Arranjar (A)</td><td>Espalha as peças na placa.</td><td>Várias gravatas de encaixe numa placa.</td></tr>
+    <tr><td class="k">Cortar (C)</td><td>Corta por um plano, com opção de pinos/encaixes (conectores).</td><td>Relevo maior que a mesa: corte em 2 e use conectores.</td></tr>
+    <tr><td class="k">Texto (T)</td><td>Escreve texto 3D em cima/dentro de uma face.</td><td>Nome da prova ou data em cima da moldura. Tamanho em mm.</td></tr>
+    <tr><td class="k">Medir</td><td>Distância entre pontos/faces.</td><td>Conferir a altura máxima do relevo antes de imprimir.</td></tr>
+    <tr><td class="k">Pintar suporte</td><td>Pincel para forçar ou bloquear suporte em áreas.</td><td>Raro no Topomural.</td></tr>
+    <tr><td class="k">Pintar costura (Seam painting)</td><td>Pincel que diz onde a costura deve ficar.</td><td>Mandar a costura para uma quina do hexágono ou para a parte de trás (módulo 13).</td></tr>
+    <tr><td class="k">Pintar cor</td><td>Pinta faces da malha com outro filamento.</td><td>Quando tiver multicor: pintar a trilha ou a água sem precisar do OBJ colorido.</td></tr>
+    <tr><td class="k">Altura de camada variável</td><td>Camadas finas onde a superfície é inclinada suave e grossas onde é reta.</td><td><b>A ferramenta mais útil para relevo.</b> Detalhe no módulo 15.</td></tr>
+  </table></div>
+
+  <h3>Modificadores: ajustes diferentes numa parte da peça</h3>
+  <p>Clique com o <b>botão direito</b> no objeto (na placa ou na lista da esquerda):</p>
+  <ul>
+    <li><b>Adicionar modificador</b> (cubo, cilindro...): dentro do volume do modificador, valem outros ajustes. Ex.: preenchimento 40% só em volta de um furo de parafuso.</li>
+    <li><b>Modificador por faixa de altura</b> (Height range Modifier): de Z = a até Z = b, outros ajustes. Ex.: no relevo, camadas de 0,24 na base (que fica escondida) e 0,12 do terreno para cima. É a versão "manual" da altura variável.</li>
+    <li><b>Parte negativa</b> (Negative part): um volume que é subtraído. Ex.: cavar um furo de ímã extra sem voltar ao gerador.</li>
+    <li><b>Adicionar ajustes</b> (Add settings): ajustes por objeto. Ex.: só a moldura com 4 paredes.</li>
+  </ul>
+  <div class="box dica"><b>Placas múltiplas</b>O Bambu Studio aceita várias placas no mesmo projeto (ícone "+" de placa). Salve um projeto <code>.3mf</code> "Hexágono X" com a placa 1 = relevo, placa 2 = moldura, placa 3 = gravatas. Cada placa guarda os ajustes dela. É a melhor forma de repetir um pedido depois.</div>
+</section>
+
+<!-- ================= 7 ================= -->
+<section class="mod" id="m7" data-titulo="Aba Qualidade" data-grupo="Os ajustes, aba por aba" data-quiz="7">
+  <div class="kick">Módulo 7</div>
+  <h2>Aba Qualidade (Quality): ajuste por ajuste</h2>
+  <p>Cada tabela segue o mesmo formato: <b>o que é</b>, <b>o que acontece se você mexer</b>, <b>valor de partida</b> (bico 0,4, PLA) e o que usar <b>no Topomural</b>. "Deixe" quer dizer: não mexa, o padrão está certo.</p>
+
+  <h3>Altura de camada (Layer height)</h3>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>O que faz / impacto</th><th>Partida</th><th>Topomural</th></tr>
+    <tr><td class="k">Layer height<small>altura da camada</small></td><td>Espessura de cada fatia. <b>O ajuste que mais muda tempo e aparência.</b> Menor = encosta mais lisa, menos "escadinha", mais tempo (metade da camada ≈ dobro de camadas). Faixa útil: 25% a 75% do bico (0,08 a 0,28).</td><td class="v">0,20</td><td>Relevo: <b>0,12 a 0,16</b> ou variável. Moldura e encaixes: 0,20.</td></tr>
+    <tr><td class="k">Initial layer height<small>altura da 1ª camada</small></td><td>Primeira camada mais grossa perdoa irregularidades e gruda melhor.</td><td class="v">0,20</td><td>Deixe 0,20 mesmo usando 0,12 no resto.</td></tr>
+  </table></div>
+
+  <h3>Largura de linha (Line width)</h3>
+  <p>Largura de cada "cordão" de plástico. O padrão é ~105% do bico (0,42 para bico 0,4). Linha mais larga = mais forte e mais rápida por área, menos detalhe. Mais estreita = mais detalhe.</p>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th><th>Partida</th><th>Topomural</th></tr>
+    <tr><td class="k">Default</td><td>Vale para o que não tiver valor próprio.</td><td class="v">0,42</td><td>Deixe.</td></tr>
+    <tr><td class="k">Initial layer</td><td>1ª camada mais larga gruda mais.</td><td class="v">0,50</td><td>Deixe.</td></tr>
+    <tr><td class="k">Outer wall<small>parede externa</small></td><td>Mais fina = parede de fora mais precisa e bonita.</td><td class="v">0,42</td><td>Deixe. Para texto pequeno: 0,40.</td></tr>
+    <tr><td class="k">Inner wall<small>parede interna</small></td><td>Mais larga = mais forte e rápida.</td><td class="v">0,45</td><td>Deixe.</td></tr>
+    <tr><td class="k">Top surface<small>topo</small></td><td>Mais fina = topo mais liso.</td><td class="v">0,42</td><td>Deixe (0,40 se quiser topo da água mais liso).</td></tr>
+    <tr><td class="k">Sparse infill<small>preenchimento</small></td><td>Mais larga = enche mais rápido. Escondido, então pode engrossar.</td><td class="v">0,45</td><td>0,45–0,50.</td></tr>
+    <tr><td class="k">Internal solid infill</td><td>Camadas sólidas internas.</td><td class="v">0,42</td><td>Deixe.</td></tr>
+    <tr><td class="k">Support</td><td>Linha do suporte.</td><td class="v">0,42</td><td>Deixe.</td></tr>
+  </table></div>
+  <div class="box topo"><b>Trilha e texto finos</b>Uma parede precisa de pelo menos ~1 largura de linha para existir. Com bico 0,4, detalhe de largura menor que ~0,45 mm <b>some</b> do fatiamento. Regra prática: trilha com pelo menos <b>1,0 mm</b> de largura e traço de letra com pelo menos <b>0,8 mm</b>. Abaixo disso, bico 0,2 (módulo 18). Sempre confira na pré-visualização se a trilha inteira apareceu.</div>
+
+  <h3>Costura (Seam)</h3>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th><th>Partida</th><th>Topomural</th></tr>
+    <tr><td class="k">Seam position<small>posição da costura</small></td><td>Onde cada volta de parede começa e termina (deixa um pontinho). <b>Aligned</b> (alinhada, prefere quinas), <b>Nearest</b> (mais próxima, prefere quinas côncavas), <b>Back</b> (atrás), <b>Random</b> (espalhada).</td><td class="v">Aligned</td><td>Aligned (vai para as quinas do hexágono) ou pintada. Módulo 13.</td></tr>
+    <tr><td class="k">Scarf joint seam<small>costura em rampa</small> <span class="tag c">confira</span></td><td>Em vez de começar a volta "de uma vez", sobe em rampa e sobrepõe. Costura quase invisível em superfície lisa e curva. Deixa um pouco mais lento.</td><td class="v">desligado</td><td>Útil na moldura redonda/curva. No hexágono as quinas já escondem.</td></tr>
+    <tr><td class="k">Seam gap<small>folga da costura</small></td><td>Encurta o fim da volta para não fazer bolinha. Muito grande = buraquinho.</td><td class="v">10–15%</td><td>Deixe.</td></tr>
+    <tr><td class="k">Wipe speed / Role-based wipe</td><td>Velocidade do "limpar" no fim da volta.</td><td class="v">padrão</td><td>Deixe.</td></tr>
+  </table></div>
+
+  <h3>Precisão (Precision)</h3>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th><th>Partida</th><th>Topomural</th></tr>
+    <tr><td class="k">Slice gap closing radius</td><td>Fecha frestas minúsculas da malha.</td><td class="v">0,049</td><td>Deixe.</td></tr>
+    <tr><td class="k">Resolution</td><td>Simplifica curvas finíssimas para o G-code não ficar pesado.</td><td class="v">0,012</td><td>Deixe.</td></tr>
+    <tr><td class="k">Arc fitting</td><td>Transforma muitos segmentos em arcos (G2/G3).</td><td class="v">ligado</td><td>Deixe.</td></tr>
+    <tr><td class="k">X-Y hole compensation<small>compensação de furo</small></td><td>Alarga (+) ou estreita (−) furos. Furos impressos saem menores que o desenho.</td><td class="v">0</td><td><b>Deixe 0.</b> A folga do encaixe e o diâmetro do vão do ímã moram no gerador. Dois lugares corrigindo a mesma coisa viram confusão.</td></tr>
+    <tr><td class="k">X-Y contour compensation</td><td>Engorda/emagrece o contorno externo.</td><td class="v">0</td><td>Deixe 0 pelo mesmo motivo.</td></tr>
+    <tr><td class="k">Elephant foot compensation<small>pé de elefante</small></td><td>Encolhe a 1ª camada, que sai esmagada e mais larga.</td><td class="v">0,15</td><td><b>Importante:</b> é a borda de baixo do relevo que entra na depressão da moldura. Sem compensação ela "trava". Mantenha 0,1–0,15 e rebarbe se precisar.</td></tr>
+    <tr><td class="k">Precise wall / Precise Z height <span class="tag c">confira</span></td><td>Paredes mais exatas / altura final exata. Ajuda em encaixes.</td><td class="v">ligado</td><td>Deixe ligado se existir na sua versão.</td></tr>
+  </table></div>
+
+  <h3>Passar ferro (Ironing)</h3>
+  <p>Depois do topo, o bico passa de novo quase sem plástico, alisando. Fica liso e acetinado, mas <b>só funciona em superfície plana</b> e aumenta bem o tempo.</p>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th><th>Partida</th><th>Topomural</th></tr>
+    <tr><td class="k">Ironing type</td><td><b>No ironing</b> / <b>Top surfaces</b> (todo topo) / <b>Topmost surface</b> (só o último topo) / <b>All solid layer</b>.</td><td class="v">No ironing</td><td>Relevo: <b>não</b> (terreno é curvo, o ferro só pegaria pedacinhos e marca). Exceção: água grande e plana, use "Top surfaces" via modificador só nela. Moldura com face de cima plana: "Topmost surface" fica lindo.</td></tr>
+    <tr><td class="k">Ironing pattern</td><td>Direção das passadas.</td><td class="v">Zig-zag/linhas</td><td>Deixe.</td></tr>
+    <tr><td class="k">Ironing flow</td><td>Pouquinho de plástico que preenche riscos. Alto = rebarba, baixo = riscos.</td><td class="v">10%</td><td>8–15%.</td></tr>
+    <tr><td class="k">Ironing line spacing</td><td>Distância entre passadas. Menor = mais liso e lento.</td><td class="v">0,15</td><td>Deixe.</td></tr>
+    <tr><td class="k">Ironing speed</td><td>Lento = melhor.</td><td class="v">~30</td><td>Deixe.</td></tr>
+  </table></div>
+
+  <h3>Gerador de paredes (Wall generator)</h3>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th><th>Partida</th><th>Topomural</th></tr>
+    <tr><td class="k">Wall generator</td><td><b>Classic</b>: todas as linhas com a mesma largura. <b>Arachne</b>: varia a largura da linha para preencher partes finas sem buraco.</td><td class="v">Classic</td><td><b>Arachne</b> no relevo e em peças com texto: trilha estreita e letras saem cheias, sem frestinha no meio.</td></tr>
+    <tr><td class="k">Minimum wall width / Minimum feature size</td><td>(Arachne) Abaixo disso o detalhe é descartado.</td><td class="v">85% / 25%</td><td>Deixe. Se um detalhe sumir, baixe o "feature size" para 15–20%.</td></tr>
+    <tr><td class="k">Wall transitioning...</td><td>(Arachne) Como transita entre números de paredes.</td><td class="v">padrão</td><td>Deixe.</td></tr>
+  </table></div>
+
+  <h3>Paredes e superfícies (Walls and surfaces / Advanced)</h3>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th><th>Partida</th><th>Topomural</th></tr>
+    <tr><td class="k">Order of walls<small>ordem das paredes</small></td><td><b>Inner/Outer</b>: externa por último; é a que melhor segura balanço e deixa a costura menos marcada. <b>Outer/Inner</b>: externa primeiro, presa a nada por fora, <b>melhor precisão dimensional</b>, mas sofre em balanço. <b>Inner/Outer/Inner</b>: externa no meio, junta medida boa e balanço razoável.</td><td class="v">Inner/Outer</td><td>Encaixes e moldura: <b>Inner/Outer/Inner</b> ou Outer/Inner (medida mais fiel). Relevo: deixe.</td></tr>
+    <tr><td class="k">Print infill first</td><td>Preenchimento antes das paredes: paredes mais fortes, mas o preenchimento pode "marcar" a parede.</td><td class="v">desligado</td><td>Deixe.</td></tr>
+    <tr><td class="k">Bridge flow<small>fluxo de ponte</small></td><td>Plástico em vãos no ar. Menor = ponte mais esticada e reta.</td><td class="v">1,0</td><td>Teto do vão do ímã é ponte: 0,9–1,0 funciona.</td></tr>
+    <tr><td class="k">Thick bridges</td><td>Ponte com linha mais grossa e forte, aparência pior.</td><td class="v">ligado</td><td>Deixe.</td></tr>
+    <tr><td class="k">Only one wall on top surfaces</td><td>Em topos, uma parede só, sobrando mais área de "topo liso".</td><td class="v">ligado</td><td>Ligado: no relevo, os degraus do terreno ficam mais uniformes.</td></tr>
+    <tr><td class="k">Only one wall on first layer</td><td>1ª camada com uma parede.</td><td class="v">desligado</td><td>Deixe.</td></tr>
+    <tr><td class="k">Detect overhang wall / Slow down for overhang</td><td>Reduz velocidade em parede que avança no ar.</td><td class="v">ligado</td><td>Deixe.</td></tr>
+    <tr><td class="k">Smooth speed discontinuity area</td><td>Suaviza transição de velocidade (menos marca).</td><td class="v">ligado</td><td>Deixe.</td></tr>
+    <tr><td class="k">Avoid crossing walls<small>evitar cruzar paredes</small></td><td>Em vez de voar por cima de buracos, contorna por dentro: menos fio e marca, mais tempo.</td><td class="v">desligado</td><td>Ligue se aparecer fio/marca no topo do terreno.</td></tr>
+    <tr><td class="k">Top surface flow ratio / Bottom surface flow ratio</td><td>Ajuste fino do fluxo só no topo/fundo.</td><td class="v">1,0</td><td>Deixe. (topo com riscos? 1,02–1,05)</td></tr>
+  </table></div>
+</section>
+
+<!-- ================= 8 ================= -->
+<section class="mod" id="m8" data-titulo="Aba Força" data-grupo="Os ajustes, aba por aba" data-quiz="8">
+  <div class="kick">Módulo 8</div>
+  <h2>Aba Força (Strength): paredes, topo/fundo e preenchimento</h2>
+  <p>A ideia central: <b>a força de uma peça impressa mora nas paredes</b>, não no preenchimento. Subir paredes de 2 para 4 deixa mais forte que subir o preenchimento de 15% para 50%, e gasta menos.</p>
+  <div class="fig">
+    <svg viewBox="0 0 640 170" role="img" aria-label="Corte de uma peça: paredes, topo, fundo, preenchimento">
+      <g font-size="12" fill="var(--tx)">
+        <rect x="40" y="20" width="300" height="130" rx="2" fill="var(--bg2)" stroke="var(--tx2)"/>
+        <rect x="40" y="20" width="300" height="22" fill="var(--ac)" opacity=".8"/>
+        <rect x="40" y="128" width="300" height="22" fill="var(--ac)" opacity=".55"/>
+        <rect x="40" y="42" width="16" height="86" fill="var(--info)" opacity=".75"/><rect x="324" y="42" width="16" height="86" fill="var(--info)" opacity=".75"/>
+        <path d="M56 50 L120 120 M90 50 L160 120 M130 50 L200 120 M170 50 L240 120 M210 50 L280 120 M250 50 L320 120 M120 50 L56 115 M160 50 L90 120 M200 50 L130 120 M240 50 L170 120 M280 50 L210 120 M320 50 L250 120" stroke="var(--tx2)" stroke-width="1.3"/>
+        <text x="360" y="36">topo: Top shell layers</text>
+        <text x="360" y="64">paredes: Wall loops</text>
+        <text x="360" y="92">preenchimento: Sparse infill</text>
+        <text x="360" y="144">fundo: Bottom shell layers</text>
+      </g>
+    </svg>
+  </div>
+  <h3>Paredes (Walls)</h3>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th><th>Partida</th><th>Topomural</th></tr>
+    <tr><td class="k">Wall loops<small>número de paredes</small></td><td>Voltas de contorno. Mais = mais forte, mais pesado, mais tempo (cada volta percorre o perímetro todo). Também deixa o topo do relevo mais "fechado" nas bordas dos degraus.</td><td class="v">2</td><td>Relevo: <b>2</b>. Moldura: <b>3</b>. Gravata de encaixe, grelha e baioneta do porta-medalhas: <b>4</b> (praticamente maciço).</td></tr>
+    <tr><td class="k">Detect thin wall</td><td>(Classic) Tenta imprimir paredes mais finas que 2 linhas.</td><td class="v">desligado</td><td>Use Arachne em vez disso.</td></tr>
+  </table></div>
+  <h3>Topo e fundo (Top/bottom shells)</h3>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th><th>Partida</th><th>Topomural</th></tr>
+    <tr><td class="k">Top shell layers / Top shell thickness</td><td>Camadas sólidas de cima. Pouca = topo com buracos ou "travesseiro" (pillowing) sobre o preenchimento. O fatiador usa o <b>maior</b> entre "camadas" e "espessura".</td><td class="v">5 cam. / 1,0 mm</td><td>Relevo: espessura ~<b>0,8–1,0 mm</b> (a 0,12 isso dá 7–8 camadas). O terreno tem topo em toda parte, então isso pesa no tempo; não suba à toa.</td></tr>
+    <tr><td class="k">Top surface pattern</td><td>Desenho do último topo. <b>Monotonic line</b>: linhas todas no mesmo sentido, uniforme, o mais bonito. <b>Concentric</b>: segue o contorno. <b>Hilbert / Archimedean</b>: decorativos.</td><td class="v">Monotonic line</td><td>Deixe. Na água plana, Monotonic fica como "espelho".</td></tr>
+    <tr><td class="k">Bottom shell layers / thickness</td><td>Camadas sólidas de baixo.</td><td class="v">3 cam.</td><td>3 (0,6 mm). No relevo o fundo fica contra a parede: pode ser 3.</td></tr>
+    <tr><td class="k">Bottom surface pattern</td><td>Desenho da face de baixo.</td><td class="v">Monotonic</td><td>Deixe.</td></tr>
+    <tr><td class="k">Internal solid infill pattern</td><td>Camadas sólidas internas.</td><td class="v">Zig-zag/linhas</td><td>Deixe.</td></tr>
+  </table></div>
+  <h3>Preenchimento (Sparse infill)</h3>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th><th>Partida</th><th>Topomural</th></tr>
+    <tr><td class="k">Sparse infill density</td><td>Quanto do miolo é plástico. 10–15% é decorativo; 20–30% é funcional; acima de 40% raramente compensa (suba paredes antes).</td><td class="v">15%</td><td>Relevo: <b>8–12%</b>. Moldura: 15%. Encaixes: 25–40%.</td></tr>
+    <tr><td class="k">Sparse infill pattern</td><td>Desenho do miolo (ver abaixo).</td><td class="v">Grid/Crosshatch <span class="tag c">confira</span></td><td>Relevo: <b>Lightning</b> ou Gyroid. Moldura: Gyroid. Encaixe: Gyroid/Cubic.</td></tr>
+    <tr><td class="k">Infill/Wall overlap</td><td>Quanto o preenchimento "morde" a parede. Pouco = preenchimento solto; muito = parede marcada de fora.</td><td class="v">15%</td><td>Deixe.</td></tr>
+    <tr><td class="k">Infill anchor length</td><td>Ponta do preenchimento que se prende à parede.</td><td class="v">padrão</td><td>Deixe.</td></tr>
+    <tr><td class="k">Infill direction</td><td>Ângulo das linhas.</td><td class="v">45°</td><td>Deixe.</td></tr>
+    <tr><td class="k">Infill combination</td><td>Imprime o preenchimento em camada dupla a cada 2 camadas: mais rápido, sem efeito visível.</td><td class="v">desligado</td><td>Relevo a 0,12: <b>ligue</b>, economiza tempo de graça.</td></tr>
+    <tr><td class="k">Minimum sparse infill threshold</td><td>Áreas menores que isso viram sólidas.</td><td class="v">15 mm²</td><td>Deixe.</td></tr>
+    <tr><td class="k">Ensure vertical shell thickness</td><td>Adiciona sólido em encostas para não ficarem finas.</td><td class="v">ligado/All</td><td>Deixe ligado: evita encosta furada no relevo.</td></tr>
+  </table></div>
+  <h3>Qual padrão de preenchimento?</h3>
+  <div class="tbl"><table>
+    <tr><th>Padrão</th><th>Força</th><th>Velocidade</th><th>Quando</th></tr>
+    <tr><td class="k">Lightning (relâmpago)</td><td>quase nenhuma</td><td>a mais rápida</td><td>Peça decorativa: só constrói "galhos" para segurar o topo. <b>Perfeito para o miolo das montanhas do relevo.</b></td></tr>
+    <tr><td class="k">Gyroid</td><td>boa em todas as direções</td><td>média</td><td>Padrão "não penso nisso". Não cruza linhas na mesma camada (o bico não bate).</td></tr>
+    <tr><td class="k">Grid / Crosshatch</td><td>boa</td><td>rápida</td><td>Padrão geral.</td></tr>
+    <tr><td class="k">Cubic / Adaptive Cubic</td><td>boa</td><td>rápida</td><td>Adaptive economiza no miolo e adensa perto das paredes.</td></tr>
+    <tr><td class="k">Honeycomb / 3D Honeycomb</td><td>alta</td><td>lenta</td><td>Peças que levam pancada. Não é o seu caso.</td></tr>
+    <tr><td class="k">Triangles / Tri-hexagon</td><td>boa no plano</td><td>média</td><td>Peças planas que dobram.</td></tr>
+    <tr><td class="k">Line / Zig-zag</td><td>fraca</td><td>rápida</td><td>Pouco uso.</td></tr>
+  </table></div>
+  <div class="box aviso"><b>Lightning e topo</b>Como o lightning é ralo, use topo com espessura ≥ 0,8 mm, senão o topo do terreno afunda entre os "galhos". Se notar afundamento, troque para Gyroid 10%.</div>
+</section>
+
+<!-- ================= 9 ================= -->
+<section class="mod" id="m9" data-titulo="Aba Velocidade" data-grupo="Os ajustes, aba por aba" data-quiz="9">
+  <div class="kick">Módulo 9</div>
+  <h2>Aba Velocidade (Speed): por que os números enganam</h2>
+  <p>Na A1 Mini os números de velocidade são <b>tetos</b>. Quem manda de verdade é a <b>velocidade volumétrica máxima</b> do filamento (mm³/s): quanto plástico o bico consegue derreter por segundo.</p>
+  <div class="box nota"><b>A conta</b>velocidade real (mm/s) = volumétrica ÷ (largura da linha × altura da camada).<br>
+  Ex.: PLA com 21 mm³/s, linha 0,45 × camada 0,20 = 0,09 mm² → no máximo <b>233 mm/s</b>. Se o perfil pede 300 mm/s no preenchimento, o fatiador corta para 233 sozinho.<br>
+  Camada 0,12: 0,45 × 0,12 = 0,054 mm² → até <b>389 mm/s</b>. Por isso camada fina não fica tão mais lenta quanto você esperaria: a máquina compensa andando mais rápido.</div>
+  <div class="fig">
+    <div class="ctrl">
+      <label>Volumétrica <input type="range" id="vVol" min="8" max="24" step="1" value="21"> <b id="vVolT"></b></label>
+      <label>Camada <input type="range" id="vCam" min="0.08" max="0.28" step="0.04" value="0.20"> <b id="vCamT"></b></label>
+      <label>Linha <input type="range" id="vLin" min="0.40" max="0.50" step="0.01" value="0.45"> <b id="vLinT"></b></label>
+    </div>
+    <div class="stats"><div class="stat"><b id="vRes"></b>velocidade máxima possível</div><div class="stat"><b id="vLim"></b>o que manda</div></div>
+    <div class="cap">Calculadora: velocidade máxima real que o bico consegue, comparada ao teto de 300 mm/s do perfil.</div>
+  </div>
+  <h3>Os ajustes</h3>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th><th>Partida</th><th>Topomural</th></tr>
+    <tr><td class="k">Initial layer speed</td><td>1ª camada devagar = gruda e fica uniforme.</td><td class="v">50</td><td>Deixe.</td></tr>
+    <tr><td class="k">Initial layer infill speed</td><td>Preenchimento da 1ª camada.</td><td class="v">~100</td><td>Deixe. A base do relevo é grande; se descolar quina, baixe para 60.</td></tr>
+    <tr><td class="k">Outer wall<small>parede externa</small></td><td>A que aparece. Mais devagar = parede mais lisa, menos ondulação (ringing).</td><td class="v">200</td><td>Lateral do hexágono e moldura: <b>120–150</b> para acabamento caprichado. Custa pouco tempo.</td></tr>
+    <tr><td class="k">Inner wall</td><td>Escondida.</td><td class="v">300</td><td>Deixe.</td></tr>
+    <tr><td class="k">Small perimeters / threshold</td><td>Contornos pequenos (letras, furos) mais devagar.</td><td class="v">50% / 0</td><td>Deixe.</td></tr>
+    <tr><td class="k">Sparse infill</td><td>Miolo. Limitado pela volumétrica.</td><td class="v">270–300</td><td>Deixe.</td></tr>
+    <tr><td class="k">Internal solid infill</td><td>Sólido interno.</td><td class="v">250</td><td>Deixe.</td></tr>
+    <tr><td class="k">Top surface</td><td>Topo. Mais devagar = topo mais bonito.</td><td class="v">200</td><td>Relevo: <b>150</b>. O topo do terreno é a "cara" da peça.</td></tr>
+    <tr><td class="k">Gap infill</td><td>Preenche frestas.</td><td class="v">250</td><td>Deixe.</td></tr>
+    <tr><td class="k">Support / interface</td><td>Suporte.</td><td class="v">padrão</td><td>Deixe.</td></tr>
+    <tr><td class="k">Overhang speed (10–25%, 25–50%, 50–75%, 75–100%)</td><td>Velocidade em balanço conforme o quanto a linha está no ar.</td><td class="v">padrão</td><td>Deixe.</td></tr>
+    <tr><td class="k">Bridge</td><td>Velocidade em ponte.</td><td class="v">50</td><td>Deixe (teto do vão do ímã).</td></tr>
+    <tr><td class="k">Travel<small>deslocamento</small></td><td>Movimento sem extrudar.</td><td class="v">700</td><td>Deixe.</td></tr>
+    <tr><td class="k">Acceleration: Normal / Outer wall / Top surface / Initial layer...</td><td>Arrancada. Aceleração alta em parede externa causa ondulação ao lado de quinas.</td><td class="v">padrão</td><td>Se vir "eco" depois das quinas do hexágono, baixe <b>Outer wall acceleration</b> para 3000–5000.</td></tr>
+    <tr><td class="k">Jerk (avançado)</td><td>Velocidade de "tranco" nas mudanças de direção.</td><td class="v">padrão</td><td>Deixe.</td></tr>
+  </table></div>
+  <div class="box dica"><b>Onde o tempo vai</b>Na Pré-visualização, escolha a visão por <b>Tipo de linha</b> (Line type): a legenda mostra <b>quanto tempo cada tipo leva</b> (parede externa, preenchimento, topo, deslocamento...). Antes de otimizar, olhe ali o que mais pesa. No relevo costuma ser topo + paredes internas dos "degraus".</div>
+</section>
+
+<!-- ================= 10 ================= -->
+<section class="mod" id="m10" data-titulo="Aba Suporte" data-grupo="Os ajustes, aba por aba" data-quiz="10">
+  <div class="kick">Módulo 10</div>
+  <h2>Aba Suporte (Support): quando precisa e quando não</h2>
+  <p>Cada camada precisa de algo embaixo. Inclinações até ~45–50° da vertical saem sem apoio (cada camada se apoia metade na de baixo). Passou disso, ou parte "voando", precisa de suporte. <b>Pontes</b> (vão entre dois apoios) de até ~20–30 mm saem sem suporte.</p>
+  <div class="box topo"><b>O relevo nunca precisa de suporte</b>Um relevo é uma superfície onde cada ponto tem uma altura só: tudo se apoia no que está embaixo. A moldura e o porta-medalhas foram desenhados para sair sem suporte também. O teto do vão do ímã é uma <b>ponte curta</b> (6 mm), sem suporte. Portanto: <b>Enable support desligado</b> em todas as peças do Topomural. Se o fatiador avisar "precisa de suporte", olhe: provavelmente a peça está deitada errada.</div>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th><th>Partida</th></tr>
+    <tr><td class="k">Enable support</td><td>Liga/desliga.</td><td class="v">desligado</td></tr>
+    <tr><td class="k">Type</td><td><b>normal(auto)</b>: colunas retas, fácil de entender. <b>tree(auto)</b>: árvore que se ramifica, gasta menos e marca menos a peça. <b>(manual)</b>: só onde você pintar.</td><td class="v">tree(auto)</td></tr>
+    <tr><td class="k">Style</td><td>Para árvore: Tree Slim / Strong / Hybrid / Organic. Organic é o mais fácil de tirar.</td><td class="v">Default</td></tr>
+    <tr><td class="k">Threshold angle</td><td>A partir de qual inclinação gera suporte. Maior = menos suporte.</td><td class="v">30°</td></tr>
+    <tr><td class="k">On build plate only</td><td>Só suporte que nasce da mesa (nunca em cima da peça). Evita marcas no topo.</td><td class="v">desligado</td></tr>
+    <tr><td class="k">Remove small overhangs</td><td>Ignora balanços minúsculos.</td><td class="v">ligado</td></tr>
+    <tr><td class="k">Top Z distance</td><td>Folga entre suporte e peça. Pequena = superfície melhor, difícil de tirar. Grande = solta fácil, superfície pior.</td><td class="v">0,2</td></tr>
+    <tr><td class="k">Support/object XY distance</td><td>Folga lateral.</td><td class="v">0,35</td></tr>
+    <tr><td class="k">Interface layers / pattern / spacing</td><td>Camadas mais densas no contato. Melhoram a face de baixo da parte suportada.</td><td class="v">2 / padrão</td></tr>
+    <tr><td class="k">Base pattern / spacing</td><td>Densidade do corpo do suporte.</td><td class="v">padrão</td></tr>
+    <tr><td class="k">Don't support bridges</td><td>Não põe suporte embaixo de pontes.</td><td class="v">ligado</td></tr>
+    <tr><td class="k">Raft layers<small>jangada</small></td><td>Camadas de "jangada" embaixo da peça inteira. Praticamente nunca necessária na A1 Mini.</td><td class="v">0</td></tr>
+    <tr><td class="k">Support filament (base / interface)</td><td>Com multicor: imprimir a interface em outro material (ex.: PETG na interface de PLA) solta perfeitamente.</td><td class="v">padrão</td></tr>
+  </table></div>
+</section>
+
+<!-- ================= 11 ================= -->
+<section class="mod" id="m11" data-titulo="Abas Outros e Multimaterial" data-grupo="Os ajustes, aba por aba" data-quiz="11">
+  <div class="kick">Módulo 11</div>
+  <h2>Abas Outros (Others) e Multimaterial</h2>
+  <h3>Adesão: saia e aba (Skirt / Brim)</h3>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th><th>Partida</th><th>Topomural</th></tr>
+    <tr><td class="k">Skirt loops</td><td>Contorno solto em volta da peça, só para "escorvar" o bico.</td><td class="v">0</td><td>Deixe 0 (a A1 já purga antes).</td></tr>
+    <tr><td class="k">Brim type</td><td><b>Auto</b> (decide sozinho), <b>Mouse ear</b> (orelhas nas quinas), <b>Outer brim only</b>, <b>No brim</b>, <b>Painted</b>.</td><td class="v">Auto</td><td>Relevo e moldura: <b>No brim</b> (base enorme, gruda sozinha, e aba deixaria rebarba na borda que encaixa). Gravatas pequenas e altas: Auto.</td></tr>
+    <tr><td class="k">Brim width</td><td>Largura da aba.</td><td class="v">5 mm</td><td>—</td></tr>
+    <tr><td class="k">Brim-object gap</td><td>Folguinha entre aba e peça: aba sai fácil.</td><td class="v">0,1</td><td>Deixe.</td></tr>
+  </table></div>
+  <h3>Modo especial (Special mode)</h3>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th><th>Topomural</th></tr>
+    <tr><td class="k">Slicing mode</td><td>Regular / Even-odd / Close holes. Para malhas com problema.</td><td>Deixe Regular.</td></tr>
+    <tr><td class="k">Print sequence</td><td><b>By layer</b>: todas as peças sobem juntas. <b>By object</b>: termina uma, depois a outra (a cabeça precisa de espaço em volta).</td><td>By layer. Por objeto só para peças baixas e separadas, e cuidado com colisão.</td></tr>
+    <tr><td class="k">Spiral vase</td><td>Uma parede contínua subindo em espiral, sem topo.</td><td>Não se aplica.</td></tr>
+    <tr><td class="k">Timelapse</td><td><b>Traditional</b>: foto a cada camada com a cabeça onde estiver. <b>Smooth</b>: a cabeça sai da frente a cada camada (vídeo bonito, mais tempo e uma torre de limpeza).</td><td>Traditional, se quiser vídeo para divulgação.</td></tr>
+    <tr><td class="k">Fuzzy skin</td><td>Parede externa "áspera", tremidinha. Esconde camada e costura totalmente.</td><td>Interessante na lateral do hexágono: textura de pedra. Use "Contour" só nas paredes externas. Teste.</td></tr>
+  </table></div>
+  <h3>Saída de G-code</h3>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th></tr>
+    <tr><td class="k">Reduce infill retraction</td><td>Não recolhe filamento dentro do preenchimento (não aparece). Economiza tempo. Deixe ligado.</td></tr>
+    <tr><td class="k">Filename format</td><td>Nome do arquivo. Pode incluir {input_filename_base}, tempo, etc.</td></tr>
+    <tr><td class="k">Post-processing scripts</td><td>Scripts que alteram o G-code. Não precisa.</td></tr>
+    <tr><td class="k">Notes</td><td>Anotação no perfil. Use para escrever "testado em DD/MM com PLA Matte X: ok".</td></tr>
+  </table></div>
+  <h3>Aba Multimaterial (para quando tiver o BMCU)</h3>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th></tr>
+    <tr><td class="k">Prime tower<small>torre de purga</small></td><td>Torre ao lado da peça onde o bico "limpa" a cor antiga a cada troca. Garante cor limpa e camadas estáveis. Gasta plástico e tempo.</td></tr>
+    <tr><td class="k">Prime volume / width / brim</td><td>Tamanho e quanto plástico a torre consome por troca.</td></tr>
+    <tr><td class="k">Flush into objects' infill</td><td>Joga parte da purga no preenchimento da peça (escondido): economiza filamento.</td></tr>
+    <tr><td class="k">Flush into objects' support</td><td>Purga dentro do suporte.</td></tr>
+    <tr><td class="k">Flush into this object</td><td>Usa um objeto "descartável" inteiro como lixeira de purga.</td></tr>
+    <tr><td class="k">Flushing volumes<small>volumes de purga</small></td><td>Botão na lista de filamentos: tabela de quanto purgar de cada cor para cada cor. Escuro → claro precisa de muito mais que claro → escuro.</td></tr>
+    <tr><td class="k">Interlocking (beam)</td><td>Entrelaça dois materiais na fronteira para não soltarem. Para materiais diferentes.</td></tr>
+  </table></div>
+  <p>Na A1 Mini, sem AMS, mesmo com 2 filamentos definidos o "multicor" vira troca manual. Explicado no módulo 17.</p>
+</section>
+
+<!-- ================= 12 ================= -->
+<section class="mod" id="m12" data-titulo="Perfis de filamento e impressora" data-grupo="Os ajustes, aba por aba" data-quiz="12">
+  <div class="kick">Módulo 12</div>
+  <h2>Perfis de filamento e de impressora</h2>
+  <p>Clique no ícone de lápis ao lado do filamento ou da impressora para editar. Mude pouco aqui: os perfis da Bambu são bons. Se mudar, <b>salve com outro nome</b>.</p>
+  <h3>Filamento</h3>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th><th>PLA (partida)</th></tr>
+    <tr><td class="k">Nozzle temperature (initial / other layers)</td><td>Quente demais: fios, ponta derretida, brilho. Fria demais: camadas fracas, sub-extrusão.</td><td class="v">220 / 220</td></tr>
+    <tr><td class="k">Bed temperature (por placa)</td><td>Há um valor para cada tipo de placa. Por isso a placa certa importa.</td><td class="v">Textured PEI: 55–65</td></tr>
+    <tr><td class="k">Flow ratio</td><td>Multiplicador de quanto plástico sai. Calibrável (módulo 19).</td><td class="v">0,98 (Bambu) / 1,0</td></tr>
+    <tr><td class="k">Pressure advance (enable / value)</td><td>Compensa a "mola" do plástico no bico em acelerações. A A1 calibra sozinha (Flow Dynamics), não precisa ligar aqui.</td><td class="v">desligado</td></tr>
+    <tr><td class="k">Max volumetric speed</td><td>Teto de mm³/s. O ajuste que mais limita a velocidade real.</td><td class="v">PLA Bambu ~21; genérico ~12–15</td></tr>
+    <tr><td class="k">Fan speed (min / max)</td><td>Ventoinha da peça. PLA quer muito ar.</td><td class="v">100%</td></tr>
+    <tr><td class="k">No cooling for the first N layers</td><td>Ventoinha desligada nas primeiras camadas (gruda melhor).</td><td class="v">1</td></tr>
+    <tr><td class="k">Slow printing down for better layer cooling / Layer time</td><td>Se a camada é rápida demais (topo pequeno de montanha), desacelera para dar tempo de esfriar.</td><td class="v">ligado / ~4–8 s</td></tr>
+    <tr><td class="k">Force cooling for overhang and bridge</td><td>Ar máximo em ponte e balanço.</td><td class="v">ligado</td></tr>
+    <tr><td class="k">Filament retraction overrides</td><td>Retração específica do filamento (sobrescreve a da impressora).</td><td class="v">desmarcado</td></tr>
+  </table></div>
+  <div class="box topo"><b>Pico de montanha derretido</b>No alto do relevo, as últimas camadas são minúsculas e a próxima chega antes de a anterior esfriar: o pico vira uma "gota". O "Slow down for layer cooling" resolve na maioria das vezes. Se não, imprima <b>dois relevos (ou relevo + gravatas) na mesma placa</b>: enquanto a cabeça vai à outra peça, o pico esfria.</div>
+  <h3>Impressora</h3>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Impacto</th><th>Partida</th></tr>
+    <tr><td class="k">Nozzle diameter / type</td><td>Tem de bater com o bico instalado. Melhor que mudar à mão: escolher o perfil "A1 mini 0.2 nozzle".</td><td class="v">0,4 inox</td></tr>
+    <tr><td class="k">Retraction length</td><td>Quanto recua o fio antes de um deslocamento. Extrusor direto: curto.</td><td class="v">~0,8 mm</td></tr>
+    <tr><td class="k">Retraction speed / Deretraction</td><td>Velocidade do recuo e da volta.</td><td class="v">30 mm/s</td></tr>
+    <tr><td class="k">Z hop (lift Z) / Z hop type</td><td>Sobe o bico ao se deslocar para não raspar no topo. Slope/Spiral é mais suave.</td><td class="v">0,4 mm, Slope/Spiral</td></tr>
+    <tr><td class="k">Wipe while retracting</td><td>Limpa o bico enquanto recua: menos bolinha.</td><td class="v">ligado</td></tr>
+    <tr><td class="k">Retract on layer change</td><td>Recua ao subir de camada.</td><td class="v">ligado</td></tr>
+    <tr><td class="k">Machine start / end G-code</td><td>Sequência de início (aquecer, calibrar, purgar) e fim.</td><td class="v"><b>não mexa</b></td></tr>
+  </table></div>
+  <div class="box aviso"><b>Não mexa no start G-code</b>Ele contém a calibração automática e a linha de purga. Na Ender 3 você precisava editar; na A1 Mini, editar errado pode fazer o bico bater na mesa.</div>
+</section>
+
+<!-- ================= 13 ================= -->
+<section class="mod" id="m13" data-titulo="Costuras escondidas" data-grupo="Topomural na prática" data-quiz="13">
+  <div class="kick">Módulo 13</div>
+  <h2>Costuras escondidas</h2>
+  <p>Toda volta de parede começa e termina em algum ponto. Ali fica uma marquinha: um pontinho saliente ou um buraquinho. Empilhadas camada após camada, essas marcas formam a <b>costura</b> (seam). Ela nunca some totalmente; o que dá para fazer é <b>escolher onde ela fica</b> ou <b>disfarçar</b>.</p>
+  <div class="fig">
+    <div class="ctrl" id="seamModo">
+      <button data-s="alinhada" class="on">Aligned</button><button data-s="proxima">Nearest</button><button data-s="traseira">Back</button><button data-s="aleatoria">Random</button><button data-s="pintada">Pintada</button>
+    </div>
+    <svg id="seamsvg" viewBox="0 0 640 260" role="img" aria-label="Costura num hexágono vista de cima e de lado"></svg>
+    <div class="box nota" id="seamtxt" style="margin-bottom:0"></div>
+  </div>
+  <h3>A estratégia por peça</h3>
+  <div class="tbl"><table>
+    <tr><th>Peça</th><th>Onde esconder</th><th>Como</th></tr>
+    <tr><td class="k">Lateral do hexágono (relevo e moldura)</td><td>Numa <b>quina</b>. A quina já é uma "linha", e o pontinho some nela.</td><td>Seam position = <b>Aligned</b>. Se ela escolher uma quina que você não quer, use <b>Pintar costura</b> numa quina só (a que vai ficar para cima na parede, ou a de baixo).</td></tr>
+    <tr><td class="k">Topo do terreno</td><td>Os contornos de cada "degrau" do terreno também são paredes, com costura. Em terreno curvo não há quina.</td><td>Aligned ou Nearest procuram pontos de curva fechada (vales, cristas). Em terreno muito liso, <b>Random</b> espalha e vira "textura", o que às vezes fica mais natural. Teste os dois numa peça pequena.</td></tr>
+    <tr><td class="k">Moldura redonda / curvas</td><td>Sem quina: fica uma linha visível.</td><td>Pintar na parte de trás (que fica contra a parede) ou ligar <b>Scarf joint seam</b> <span class="tag c">confira</span>.</td></tr>
+    <tr><td class="k">Interior da moldura (onde o relevo encaixa)</td><td>Fica escondida pelo relevo.</td><td>Pintar ali é ótimo: some de vez.</td></tr>
+    <tr><td class="k">Gravata do encaixe, grelha</td><td>Não aparecem.</td><td>Não se preocupe.</td></tr>
+  </table></div>
+  <h3>Outros fatores que mudam a costura</h3>
+  <ul>
+    <li><b>Flow Dynamics calibrada</b> (a A1 faz sozinha): é a principal razão para a costura ser discreta nas Bambu.</li>
+    <li><b>Seam gap</b>: buraquinho na costura? baixe para 5–10%. Bolinha? suba para 15%.</li>
+    <li><b>Wipe</b> ligado (padrão): o bico limpa para dentro ao terminar.</li>
+    <li><b>Velocidade da parede externa</b> mais baixa: costura menor.</li>
+    <li><b>Filamento seco</b>: úmido escorre e aumenta a bolinha.</li>
+    <li><b>Fuzzy skin</b> na parede externa: a costura some na textura (muda o visual inteiro).</li>
+  </ul>
+</section>
+
+<!-- ================= 14 ================= -->
+<section class="mod" id="m14" data-titulo="Tempo, força e beleza" data-grupo="Topomural na prática" data-quiz="14">
+  <div class="kick">Módulo 14</div>
+  <h2>Tempo × força × beleza: onde está cada alavanca</h2>
+  <p>Você sempre troca um pelo outro. A tabela mostra quanto cada ajuste pesa. ▲ = melhora, ▼ = piora, número de símbolos = intensidade.</p>
+  <div class="tbl"><table>
+    <tr><th>Alavanca</th><th>Tempo</th><th>Força</th><th>Beleza</th><th>Comentário</th></tr>
+    <tr><td class="k">Camada 0,20 → 0,12</td><td>▼▼▼</td><td>≈</td><td>▲▲▲</td><td>A maior de todas. No relevo é onde vale gastar.</td></tr>
+    <tr><td class="k">Altura variável (adaptativa)</td><td>▲▲ (vs 0,12 fixa)</td><td>≈</td><td>≈ / ▼</td><td>Quase a beleza da fina, bem menos tempo. A melhor troca para relevo.</td></tr>
+    <tr><td class="k">Faixa de altura: base grossa, terreno fino</td><td>▲▲</td><td>≈</td><td>≈</td><td>A base escondida não precisa de camada fina.</td></tr>
+    <tr><td class="k">Preenchimento 15% → 8% Lightning</td><td>▲▲</td><td>▼</td><td>≈</td><td>Relevo decorativo não precisa de força interna.</td></tr>
+    <tr><td class="k">Paredes 2 → 4</td><td>▼</td><td>▲▲▲</td><td>▲</td><td>Força barata. Para encaixe e baioneta.</td></tr>
+    <tr><td class="k">Topo 5 → 8 camadas</td><td>▼</td><td>▲</td><td>▲</td><td>Só se o topo estiver furado.</td></tr>
+    <tr><td class="k">Parede externa 200 → 120 mm/s</td><td>▼ (pouco)</td><td>≈</td><td>▲▲</td><td>Lateral mais lisa por poucos minutos.</td></tr>
+    <tr><td class="k">Infill combination</td><td>▲</td><td>≈</td><td>≈</td><td>De graça com camada fina.</td></tr>
+    <tr><td class="k">Ironing no topo</td><td>▼▼</td><td>≈</td><td>▲▲ (só plano)</td><td>Moldura sim, terreno não.</td></tr>
+    <tr><td class="k">Bico 0,4 → 0,2</td><td>▼▼▼▼</td><td>▼</td><td>▲▲ (detalhe)</td><td>Só para peça pequena e detalhada.</td></tr>
+    <tr><td class="k">Várias peças na mesma placa</td><td>▲ (por peça)</td><td>≈</td><td>▲ (pico esfria)</td><td>Aquecimento e calibração uma vez só.</td></tr>
+    <tr><td class="k">Cada troca manual de cor</td><td>▼ (minutos + você presente)</td><td>≈</td><td>▲▲</td><td>Planeje poucas.</td></tr>
+  </table></div>
+  <h3>Pensando na peça como "fatias"</h3>
+  <p>O tempo de uma camada depende da <b>área</b> e do <b>perímetro</b> dela. No relevo:</p>
+  <ul>
+    <li>As camadas da <b>base</b> (até o ponto mais baixo do terreno) têm a área do hexágono inteiro, mas são miolo, então dependem do preenchimento: Lightning e 0,24 aqui economizam muito.</li>
+    <li>As camadas do <b>terreno</b> têm muitos contornos (cada morro é uma "ilha") e muito topo. É onde está a beleza e a maior parte do tempo.</li>
+    <li>O <b>Exagero do Relevo</b> no gerador muda a altura do terreno, e portanto quantas camadas finas existem. Exagero 2× ≈ o dobro de camadas na parte cara.</li>
+  </ul>
+  <div class="box dica"><b>Rotina para otimizar uma peça</b>1) Fatie com o perfil padrão e anote tempo e gramas. 2) Veja na Pré-visualização, por <b>Tipo de linha</b>, o que mais pesa. 3) Mude <b>uma</b> coisa, fatie de novo e compare. 4) Salve o perfil que ficou bom com um nome claro. Em 3–4 rodadas você acha o seu equilíbrio.</div>
+</section>
+
+<!-- ================= 15 ================= -->
+<section class="mod" id="m15" data-titulo="Receitas Topomural" data-grupo="Topomural na prática" data-quiz="15">
+  <div class="kick">Módulo 15</div>
+  <h2>Receitas para as peças do Topomural</h2>
+  <h3>Simulador: a escadinha do relevo</h3>
+  <p>O fatiador corta o terreno em fatias horizontais. Encosta íngreme quase não mostra degrau; encosta <b>suave</b> vira uma escada larga. Mexa na camada e ligue a altura variável.</p>
+  <div class="fig">
+    <div class="ctrl">
+      <label>Camada <input type="range" id="rCam" min="0" max="5" step="1" value="3"> <b id="rCamT"></b></label>
+      <label><input type="checkbox" id="rVar"> altura variável (0,08 a 0,28)</label>
+      <label>Exagero <input type="range" id="rExa" min="1" max="3" step="0.5" value="2"> <b id="rExaT"></b></label>
+    </div>
+    <svg id="relevoSvg" viewBox="0 0 640 260" role="img" aria-label="Perfil do terreno e as camadas"></svg>
+    <div class="stats"><div class="stat"><b id="rN"></b>camadas</div><div class="stat"><b id="rT"></b>tempo relativo (estimativa)</div><div class="stat"><b id="rE"></b>maior degrau visível</div></div>
+    <div class="cap">Perfil de um corte do relevo (124 mm de largura). Escala vertical exagerada no desenho para os degraus aparecerem. Linha escura = superfície desejada.</div>
+  </div>
+
+  <h3>Como usar a altura variável no Bambu Studio</h3>
+  <ol class="steps">
+    <li>Selecione o relevo e clique no ícone <b>Altura de camada variável</b> (Variable layer height) na barra de cima, ou botão direito no objeto.</li>
+    <li>Aparece uma faixa colorida ao lado da peça (azul = camada fina, vermelho = grossa).</li>
+    <li>Clique em <b>Adaptive</b>. O controle "qualidade" vai de rápido a detalhado: comece no meio.</li>
+    <li>Clique em <b>Smooth</b> para suavizar transições bruscas.</li>
+    <li>Fatie e compare o tempo com a camada fixa. <b>Reset</b> volta ao normal.</li>
+  </ol>
+  <div class="box aviso"><b>Cuidado com a altura variável e os ímãs</b>Com camadas variáveis, a camada onde você pôs a pausa do ímã pode mudar de número ao refatiar. Sempre <b>faça a altura variável primeiro e a pausa por último</b>, e confira a pausa depois de qualquer mudança.</div>
+
+  <h3>As receitas</h3>
+  <p>Comece por estas, salve cada uma como um perfil seu e ajuste a partir dos resultados.</p>
+  <div class="tbl"><table>
+    <tr><th>Ajuste</th><th>Relevo (hexágono)</th><th>Moldura</th><th>Gravata / encaixe</th><th>Porta-medalhas (base + grelha)</th></tr>
+    <tr><td class="k">Filamento</td><td>PLA Matte</td><td>PLA Matte ou Basic</td><td>PLA Basic</td><td>PLA Matte</td></tr>
+    <tr><td class="k">Layer height</td><td>0,12–0,16 ou variável (0,08–0,24)</td><td>0,20 (0,16 se tiver texto)</td><td>0,20</td><td>0,16–0,20</td></tr>
+    <tr><td class="k">Wall generator</td><td>Arachne</td><td>Arachne</td><td>Classic</td><td>Arachne</td></tr>
+    <tr><td class="k">Wall loops</td><td>2</td><td>3</td><td>4</td><td>3 (grelha: 4)</td></tr>
+    <tr><td class="k">Top shell</td><td>~0,8–1,0 mm</td><td>1,0 mm</td><td>padrão</td><td>1,0 mm</td></tr>
+    <tr><td class="k">Bottom shell</td><td>3 camadas</td><td>3–4</td><td>padrão</td><td>3–4</td></tr>
+    <tr><td class="k">Sparse infill</td><td>8–10% Lightning (ou Gyroid 10%)</td><td>15% Gyroid</td><td>30–40% Gyroid</td><td>20% Gyroid</td></tr>
+    <tr><td class="k">Infill combination</td><td>ligado</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td class="k">Seam</td><td>Aligned (pintar 1 quina)</td><td>Aligned / pintada por dentro</td><td>padrão</td><td>Aligned</td></tr>
+    <tr><td class="k">Outer wall speed</td><td>150</td><td>120–150</td><td>padrão</td><td>150</td></tr>
+    <tr><td class="k">Top surface speed</td><td>150</td><td>150</td><td>padrão</td><td>150</td></tr>
+    <tr><td class="k">Ironing</td><td>não (só água plana, por modificador)</td><td>Topmost surface (se o topo for plano)</td><td>não</td><td>não</td></tr>
+    <tr><td class="k">Elephant foot comp.</td><td>0,15 (borda entra na moldura)</td><td>0,15</td><td>0,15</td><td>0,15</td></tr>
+    <tr><td class="k">Order of walls</td><td>padrão</td><td>Inner/Outer/Inner</td><td>Inner/Outer/Inner</td><td>Inner/Outer/Inner</td></tr>
+    <tr><td class="k">Suporte</td><td>não</td><td>não</td><td>não</td><td>não</td></tr>
+    <tr><td class="k">Brim</td><td>não</td><td>não</td><td>Auto</td><td>não</td></tr>
+    <tr><td class="k">Pausa para ímã</td><td>se tiver ímã de encaixe</td><td>ímã de geladeira e/ou encaixe</td><td>—</td><td>se tiver ímã</td></tr>
+  </table></div>
+  <h3>Encaixes: acertar a folga</h3>
+  <p>Relevo na depressão da moldura, gravata no bolso lateral, grelha na baioneta: todos dependem da <b>Folga do Encaixe</b> do gerador (hoje 0,4 mm). A máquina, o filamento e o pé de elefante mudam o resultado real em décimos de milímetro. O caminho:</p>
+  <ol class="steps">
+    <li>Imprima <b>uma gravata e um pedaço de moldura</b> com o bolso (use a ferramenta Cortar para imprimir só um canto da moldura: muito mais rápido que a peça toda).</li>
+    <li>Teste: entrou justo sem forçar = ok. Não entrou = aumente a folga no gerador em 0,1. Ficou bambo = diminua 0,1.</li>
+    <li>Mantenha a compensação X-Y do fatiador em 0: <b>a folga mora em um lugar só</b>, o gerador.</li>
+    <li>Anote o valor que funcionou para cada filamento (PLA Matte e Basic podem diferir).</li>
+  </ol>
+  <h3>Relevo maior que a mesa</h3>
+  <p>Até ~170 mm cabe numa peça. Acima disso: use a ferramenta <b>Cortar</b> com conectores tipo pino (Dowel) ou, melhor, divida no gerador com o conector lateral, que já foi desenhado para isso.</p>
+</section>
+
+<!-- ================= 16 ================= -->
+<section class="mod" id="m16" data-titulo="Ímã embutido: pausar, inserir, continuar" data-grupo="Topomural na prática" data-quiz="16">
+  <div class="kick">Módulo 16</div>
+  <h2>Ímã embutido: fazer a impressora parar, inserir o ímã e continuar</h2>
+  <p>O gerador cava os vãos dos ímãs <b>fechados</b> por dentro da peça (ímã da geladeira na moldura: vão Ø6,2 × 2,2 para ímã Ø6×2; ímã do encaixe: vão a 0,2 mm da face). Um vão fechado só recebe o ímã se a impressora <b>parar</b> no momento certo: depois de imprimir as paredes do vão e <b>antes</b> da camada que fecha a tampa.</p>
+  <div class="fig">
+    <svg viewBox="0 0 700 150" role="img" aria-label="As quatro etapas: imprime o fundo e as paredes do vão, pausa, insere o ímã, continua e fecha a tampa">
+      <g font-size="12" fill="var(--tx)" text-anchor="middle">
+        <g transform="translate(20,20)"><rect x="0" y="70" width="130" height="20" fill="var(--terra)"/><rect x="0" y="40" width="45" height="30" fill="var(--terra)"/><rect x="85" y="40" width="45" height="30" fill="var(--terra)"/><text x="65" y="115">1. fundo + paredes</text></g>
+        <g transform="translate(195,20)"><rect x="0" y="70" width="130" height="20" fill="var(--terra)"/><rect x="0" y="40" width="45" height="30" fill="var(--terra)"/><rect x="85" y="40" width="45" height="30" fill="var(--terra)"/><text x="65" y="25" fill="var(--bad)" font-weight="700">⏸ PAUSA</text><text x="65" y="115">2. ela para</text></g>
+        <g transform="translate(370,20)"><rect x="0" y="70" width="130" height="20" fill="var(--terra)"/><rect x="0" y="40" width="45" height="30" fill="var(--terra)"/><rect x="85" y="40" width="45" height="30" fill="var(--terra)"/><rect x="48" y="45" width="34" height="25" rx="2" fill="var(--tx2)"/><text x="65" y="115">3. você põe o ímã</text></g>
+        <g transform="translate(545,20)"><rect x="0" y="70" width="130" height="20" fill="var(--terra)"/><rect x="0" y="40" width="45" height="30" fill="var(--terra)"/><rect x="85" y="40" width="45" height="30" fill="var(--terra)"/><rect x="48" y="45" width="34" height="25" rx="2" fill="var(--tx2)"/><rect x="0" y="20" width="130" height="20" fill="var(--ac)" opacity=".85"/><text x="65" y="115">4. continua e fecha</text></g>
+      </g>
+    </svg>
+  </div>
+
+  <h3>Simulador: em qual camada pausar</h3>
+  <div class="fig">
+    <div class="ctrl">
+      <label>Camada <select id="mCam"><option>0.12</option><option>0.16</option><option selected>0.20</option><option>0.24</option><option>0.28</option></select></label>
+      <label>Ímã <select id="mIma"><option value="6x2" selected>Ø6 × 2 (geladeira, moldura)</option><option value="4x1">Ø4 × 1 (encaixe)</option></select></label>
+      <label>Piso abaixo do vão <input type="range" id="mPiso" min="0.2" max="2" step="0.1" value="0.4"> <b id="mPisoT"></b></label>
+    </div>
+    <svg id="imaSvg" viewBox="0 0 640 300" role="img" aria-label="Corte da peça com as camadas e o vão do ímã"></svg>
+    <div class="box nota" id="imaTxt" style="margin-bottom:0"></div>
+    <div class="cap">O fatiador decide se cada camada é "vão" ou "plástico" olhando o <b>meio</b> da camada. Por isso o vão impresso pode sair um pouco menor que o desenhado. O valor do piso depende da peça: confira na pré-visualização.</div>
+  </div>
+
+  <h3>Passo a passo no Bambu Studio</h3>
+  <ol class="steps">
+    <li>Prepare tudo antes: perfil, camada, altura variável, peças na placa. <b>A pausa é a última coisa.</b></li>
+    <li>Clique em <b>Fatiar placa</b>. Vá para a <b>Pré-visualização</b>.</li>
+    <li>À direita há uma <b>régua vertical</b> com o número da camada e a altura. Arraste para baixo devagar (ou use as setas ↑ ↓ do teclado com a régua selecionada) até ver o <b>vão do ímã aberto</b> (um buraco redondo na camada).</li>
+    <li>Continue subindo uma camada por vez até a <b>primeira camada em que o buraco some</b> (aparece a "tampa", geralmente com linhas de ponte atravessando). <b>Essa é a camada da pausa.</b></li>
+    <li>Com a régua nessa camada, clique com o <b>botão direito</b> no marcador (ou no ícone "+" ao lado do número) e escolha <b>Adicionar pausa</b> (Add pause). <span class="tag c">confira</span> o nome exato na sua versão.</li>
+    <li>Um ícone de pausa aparece na régua. A pausa acontece <b>antes</b> de essa camada ser impressa, ou seja, com o vão aberto. Desça uma camada e confira: o buraco ainda está aberto ali.</li>
+    <li>Se houver ímãs em <b>alturas diferentes</b> (ex.: moldura com ímã de geladeira no fundo e ímã de encaixe em outra altura), repita: uma pausa para cada altura.</li>
+    <li>Envie a impressão normalmente.</li>
+  </ol>
+  <div class="box dica"><b>Tempo da pausa</b>Na Pré-visualização dá para ver o tempo até a camada da pausa (passe o mouse ou veja o tempo estimado por camada). Programe-se para estar perto da máquina nesse horário. Ative as notificações do app Bambu Handy: ele avisa quando a impressora pausa.</div>
+
+  <h3>Passo a passo na impressora</h3>
+  <ol class="steps">
+    <li><b>Separe os ímãs antes</b>, já com a polaridade certa (abaixo), uma pinça de plástico ou madeira e a cola instantânea.</li>
+    <li>A impressora para e mostra a tela de pausa. A mesa e o bico continuam quentes. <b>Cuidado: o bico está a ~220 °C.</b></li>
+    <li><b>Não mova os eixos pela tela.</b> A posição exata é o que permite continuar sem degrau. Se a cabeça estiver em cima do vão e atrapalhar, trabalhe pelos lados com a pinça. <span class="tag c">confira</span> se o seu firmware afasta a cabeça sozinho ao pausar.</li>
+    <li>Pingue uma gota mínima de cola no fundo do vão (opcional, recomendado) e coloque o ímã com a pinça. Pressione até assentar.</li>
+    <li><b>Confira que o ímã ficou abaixo da borda do vão.</b> Se ele estiver saliente, o bico bate nele ao continuar: arranca o ímã ou desloca a camada. Na dúvida, passe a ponta de uma régua por cima.</li>
+    <li>Se o bico soltou um fiozinho de plástico (vazou na pausa), tire com a pinça.</li>
+    <li>Toque em <b>Continuar</b> (Resume). Fique olhando a primeira camada da tampa passar por cima dos ímãs.</li>
+  </ol>
+
+  <h3>Polaridade: o erro que só aparece no fim</h3>
+  <ul>
+    <li><b>Ímã de geladeira</b> (moldura → porta da geladeira): polaridade <b>não importa</b>, o aço da geladeira não tem polo.</li>
+    <li><b>Ímã de encaixe</b> (relevo ↔ moldura): <b>importa</b>. Se um ímã do relevo ficar com o mesmo polo do ímã da moldura, eles se repelem e a peça "flutua".</li>
+  </ul>
+  <div class="box topo"><b>O truque da pilha</b>Empilhe todos os ímãs numa coluna (eles se alinham sozinhos). Com uma caneta permanente, marque com um ponto a face de cima de cada um, sem desmontar a pilha. Agora todos têm a mesma face marcada com o mesmo polo.<br>
+  No Topomural o relevo é impresso de <b>base para baixo</b> e a moldura com a <b>depressão para cima</b>, e as duas faces se encontram assim: base do relevo apoiada no fundo da depressão. Nesse caso, insira os ímãs com <b>a marca para cima nas duas peças</b>: o polo de baixo do ímã do relevo encontra o polo de cima do ímã da moldura, que são opostos.<br>
+  <b>Antes de imprimir de verdade:</b> segure dois ímãs marcados, um em cima do outro, ambos com a marca para cima. Eles se atraem? Então a regra vale para você. Faça esse teste com a mão uma vez e escreva o resultado no seu perfil.</div>
+
+  <h3>Problemas comuns</h3>
+  <div class="tbl"><table>
+    <tr><th>Sintoma</th><th>Causa</th><th>Solução</th></tr>
+    <tr><td class="k">Ímã não entra no vão</td><td>Vão saiu menor (furos impressos encolhem) ou pé de elefante no fundo.</td><td>Aumentar o diâmetro do vão no gerador (Ø6,4 em vez de 6,2). Não mexa na compensação do fatiador.</td></tr>
+    <tr><td class="k">Ímã fica saliente</td><td>Vão impresso mais raso que o desenhado (arredondamento da camada, veja o simulador).</td><td>Vão +0,2 mm mais fundo, ou camada que divida a altura do vão.</td></tr>
+    <tr><td class="k">Ímã "pula" para fora ou gruda no vizinho</td><td>Atração entre ímãs próximos ou pela cabeça/mesa de aço.</td><td>Gota de cola. Insira do mais distante para o mais próximo.</td></tr>
+    <tr><td class="k">Tampa com buraco ou caída sobre o ímã</td><td>Ponte ruim: primeira camada da tampa no ar.</td><td>Normal ter linhas meio frouxas por dentro; por fora fica bom com 3+ camadas de tampa. Se a face aparente marcar, aumente o piso/tampa no gerador.</td></tr>
+    <tr><td class="k">Marca horizontal na lateral na altura da pausa</td><td>O plástico esfriou e encolheu durante a pausa.</td><td>Pause rápido (minutos, não horas). Normal ficar uma linha leve; a quina do hexágono esconde se a costura estiver lá.</td></tr>
+    <tr><td class="k">Esqueceu de estar lá</td><td>A impressora espera indefinidamente.</td><td>Nada se perde se for poucas horas. Para pausas longas, a marca da pausa aumenta.</td></tr>
+    <tr><td class="k">Ímã fraco depois de impresso</td><td>Neodímio comum perde força acima de ~80 °C.</td><td>A mesa a 55–65 °C está ok. Não use mesa acima de 80 °C com ímã dentro.</td></tr>
+  </table></div>
+  <div class="box nota"><b>Alternativa sem pausa</b>O gerador também pode fazer o furo <b>aberto</b> (era assim antes da v28). Aí você cola o ímã depois de imprimir, sem pausa, mas o ímã fica visível e a colagem pode soltar. O vão fechado com pausa é mais bonito e firme. Vale testar a pausa numa peça pequena primeiro (só um quadradinho com um vão).</div>
+</section>
+
+<!-- ================= 17 ================= -->
+<section class="mod" id="m17" data-titulo="Cores com um carretel só" data-grupo="Topomural na prática" data-quiz="17">
+  <div class="kick">Módulo 17</div>
+  <h2>Cores com um carretel só (e o que muda com o BMCU)</h2>
+  <p>Sem trocador automático, a impressora tem <b>uma cor por vez</b>. Dá para ter cor de quatro jeitos:</p>
+  <div class="tbl"><table>
+    <tr><th>Jeito</th><th>Como fica</th><th>Esforço</th></tr>
+    <tr><td class="k">1. Peças separadas</td><td>Cada peça numa cor (moldura de uma cor, relevo de outra, grelha de outra).</td><td>Nenhum. Uma placa por cor.</td></tr>
+    <tr><td class="k">2. Troca por camada</td><td>Faixas horizontais: tudo abaixo de uma altura numa cor, acima noutra. No relevo vira <b>cor por altitude</b> (água/vale/montanha/pico com neve).</td><td>Uma pausa por troca, você presente.</td></tr>
+    <tr><td class="k">3. Pintar depois</td><td>Trilha em alto relevo pintada com caneta acrílica de ponta fina (tipo Posca). Fica nítido porque a trilha é saliente.</td><td>Manual, mas muito controle.</td></tr>
+    <tr><td class="k">4. Trocador (BMCU/AMS)</td><td>Cor por região: trilha, água, terra, construções, cada uma da sua cor, em qualquer altura.</td><td>Automático, mas gasta tempo e filamento de purga.</td></tr>
+  </table></div>
+  <div class="box topo"><b>Por que a trilha não sai colorida com troca por camada</b>A trilha sobe e desce junto com o terreno. Numa mesma camada existe trilha e terra lado a lado. Troca por camada só separa "embaixo/em cima", nunca "trilha/terreno". Para a trilha colorida: pintar depois (jeito 3) ou o BMCU (jeito 4).</div>
+
+  <h3>Simulador: cores por altitude</h3>
+  <div class="fig">
+    <div class="ctrl">
+      <label><input type="color" id="c0" value="#4f8fc9"> até</label><label><input type="range" id="z1" min="0" max="10" step="0.2" value="3.2"> <b id="z1T"></b></label>
+      <label><input type="color" id="c1" value="#b9895a"> até</label><label><input type="range" id="z2" min="0" max="10" step="0.2" value="6.6"> <b id="z2T"></b></label>
+      <label><input type="color" id="c2" value="#f2efe8"> resto</label>
+    </div>
+    <svg id="faixaSvg" viewBox="0 0 640 240" role="img" aria-label="Relevo com faixas de cor por altura"></svg>
+    <div class="box nota" id="faixaTxt" style="margin-bottom:0"></div>
+    <div class="cap">Camada 0,20 (1ª camada 0,20). Arraste os limites. A água é plana na altura 3,0 mm neste exemplo: colocar o primeiro limite logo acima dela deixa a água inteira em azul.</div>
+  </div>
+
+  <h3>Troca de cor por camada: passo a passo</h3>
+  <h4>No Bambu Studio</h4>
+  <ol class="steps">
+    <li>Fatie e vá para a Pré-visualização.</li>
+    <li>Na régua vertical, vá até a <b>primeira camada que deve sair na cor nova</b>.</li>
+    <li>Botão direito no marcador → <b>Adicionar pausa</b>. (Existe também "Trocar filamento"/"Change filament", que exige ter 2+ filamentos na lista e pinta a pré-visualização com a cor nova. Na A1 Mini sem AMS, a impressora pede a troca manual. <span class="tag c">confira</span> como a sua versão se comporta com uma peça pequena antes de confiar numa peça grande.)</li>
+    <li>Uma pausa por troca. Anote num papel: "camada 17 → marrom, camada 52 → branco".</li>
+  </ol>
+  <h4>Na impressora, a cada pausa</h4>
+  <ol class="steps">
+    <li>Na tela de pausa: <b>Filamento → Descarregar</b>. Ela corta e recua; puxe o fio antigo pelo tubo e prenda a ponta no carretel.</li>
+    <li>Troque o carretel, corte a ponta nova em diagonal, empurre pelo tubo.</li>
+    <li><b>Carregar</b>. Ela empurra e purga.</li>
+    <li><b>Purgue até sair a cor nova pura</b> (use "Extrudar" mais vezes). De escuro para claro precisa de bem mais: o azul "suja" o branco por vários centímetros de fio.</li>
+    <li>Tire com a pinça o fiapo pendurado no bico (bico quente!) e qualquer bolinha que tenha caído na peça.</li>
+    <li><b>Continuar</b>.</li>
+  </ol>
+  <div class="box dica"><b>Ordem das cores</b>Planeje do <b>claro para o escuro</b> quando o desenho deixar: menos purga e menos risco de mancha. No relevo, porém, a ordem é imposta pela altura (água embaixo, neve em cima). Nesse caso, purgue com generosidade antes do branco.</div>
+
+  <h3>Quando o BMCU chegar</h3>
+  <ul>
+    <li>Ele aparece para a impressora como um AMS Lite: no Bambu Studio você liga "Usar AMS" no envio e associa cada cor do arquivo a um slot.</li>
+    <li>O OBJ colorido do gerador (4 cores) passa a fazer sentido: cada cor da malha vai para um filamento.</li>
+    <li><b>Cada camada com várias cores = várias trocas.</b> Uma troca na A1 Mini leva por volta de 1 minuto e joga fora um pouco de filamento (estimativa: ~0,2–0,5 g por troca, conforme as cores). Um relevo com trilha colorida em 100 camadas pode ter 200+ trocas: horas a mais e dezenas de gramas de "cocô" de purga.</li>
+    <li>Para reduzir: <b>Flush into objects' infill</b> (purga dentro do miolo), revisar a tabela de <b>volumes de purga</b>, camadas mais grossas na região colorida, e menos cores onde não aparece.</li>
+    <li>A <b>torre de purga</b> (prime tower) ocupa um canto da placa: deixe espaço ao arrumar a peça.</li>
+  </ul>
+</section>
+
+<!-- ================= 18 ================= -->
+<section class="mod" id="m18" data-titulo="Bico 0,2 e troca do hotend" data-grupo="A impressora, avançado" data-quiz="18">
+  <div class="kick">Módulo 18</div>
+  <h2>Bico 0,2 e troca do hotend</h2>
+  <h3>Quando vale o 0,2</h3>
+  <div class="duo">
+    <div class="card"><h4>Use 0,2 para</h4><ul><li>Texto pequeno (traço menor que 0,8 mm).</li><li>Trilha muito fina.</li><li>Peças pequenas e detalhadas (chaveiro com relevo, miniatura).</li><li>Quando a peça é pequena e o tempo não importa.</li></ul></div>
+    <div class="card"><h4>Fique no 0,4 para</h4><ul><li>O hexágono de 124 mm (o 0,2 leva 3 a 4× mais).</li><li>Moldura, encaixes, porta-medalhas.</li><li>Qualquer peça que precise de força.</li><li>Filamento com carga (fibra, glitter, glow): entope o 0,2.</li></ul></div>
+  </div>
+  <div class="tbl"><table>
+    <tr><th></th><th>Bico 0,4</th><th>Bico 0,2</th></tr>
+    <tr><td class="k">Camadas (perfis)</td><td class="v">0,08–0,28</td><td class="v">0,04–0,14 (padrão 0,10) <span class="tag c">confira</span></td></tr>
+    <tr><td class="k">Largura de linha</td><td class="v">0,42</td><td class="v">~0,22</td></tr>
+    <tr><td class="k">Menor detalhe útil</td><td class="v">~0,45 mm</td><td class="v">~0,25 mm</td></tr>
+    <tr><td class="k">Tempo (mesma peça)</td><td>1×</td><td>3–4× (estimativa)</td></tr>
+    <tr><td class="k">Entupimento</td><td>raro</td><td>mais sensível a poeira e filamento úmido</td></tr>
+  </table></div>
+  <div class="box topo"><b>Meio-termo inteligente</b>Para um relevo com nome em cima, em vez de imprimir tudo com 0,2, aumente o tamanho do texto no gerador até o traço passar de 0,8 mm e use Arachne com camada 0,12 no bico 0,4. Se ainda assim precisar do 0,2, faça o texto como peça separada (placa de nome) em 0,2 e cole.</div>
+  <h3>Trocar o hotend (bico) da A1 Mini</h3>
+  <p>Na A1 o bico vem como um conjunto (hotend) que sai inteiro com uma trava, sem chave e sem desligar fios. <span class="tag c">confira</span> o vídeo oficial da Bambu para o seu modelo antes da primeira vez (wiki.bambulab.com → A1 mini → hotend).</p>
+  <ol class="steps">
+    <li><b>Descarregue o filamento</b> (Filamento → Descarregar).</li>
+    <li><b>Espere esfriar</b>. Veja a temperatura do bico na tela: abaixo de ~50 °C.</li>
+    <li>Abra a <b>trava do hotend</b> (a presilha na frente/lateral da cabeça).</li>
+    <li>Puxe o hotend <b>para baixo, reto</b>, sem torcer.</li>
+    <li>Encaixe o novo até o fim, reto, e <b>feche a trava</b> (precisa travar firme).</li>
+    <li>Na tela: <b>Ajustes → Bico</b> (Nozzle) → informe o diâmetro (0,2) e o tipo (inox/endurecido).</li>
+    <li>No Bambu Studio: troque a impressora para <b>"Bambu Lab A1 mini 0.2 nozzle"</b>. Os perfis de processo trocam junto (você verá "0.10mm Standard @BBL A1M 0.2 nozzle").</li>
+    <li>Carregue o filamento e imprima algo pequeno para conferir.</li>
+  </ol>
+  <div class="box erro"><b>Não esqueça os dois lugares</b>Se a tela diz 0,4 e o bico é 0,2 (ou o perfil do fatiador está errado), a impressora pode recusar o arquivo ou extrudar o dobro/metade do plástico: entope ou sai fraco. A Bambu avisa quando o arquivo e a impressora não batem; não ignore o aviso.</div>
+  <p>Guarde o hotend retirado num saquinho, com uma etiqueta "0,4 inox ok" (ou "entupido"). Ter um reserva é a forma mais rápida de resolver entupimento: troca e desentope o outro com calma.</p>
+</section>
+
+<!-- ================= 19 ================= -->
+<section class="mod" id="m19" data-titulo="Calibração" data-grupo="A impressora, avançado" data-quiz="19">
+  <div class="kick">Módulo 19</div>
+  <h2>Calibração: quando vale a pena e como fazer</h2>
+  <p>Com filamento da própria Bambu, os perfis já vêm calibrados e a máquina faz o resto. Calibre quando trocar de <b>marca</b> de filamento ou quando algo estiver estranho. No Bambu Studio fica na aba/menu <b>Calibração</b> (Calibration) <span class="tag c">confira</span> o lugar exato na sua versão.</p>
+  <div class="tbl"><table>
+    <tr><th>Calibração</th><th>O que acerta</th><th>Quando</th><th>Como ler o resultado</th></tr>
+    <tr><td class="k">Flow Dynamics (pressure advance)</td><td>Cantos e costura: sem bolinha na quina nem falha depois dela.</td><td>A A1 faz sozinha antes de cada impressão (opção no envio). Para economizar 1–2 min por impressão, calibre uma vez por filamento, salve o valor (K) e desligue a automática.</td><td>Automático: ela mede com o sensor. Manual: escolha a linha mais uniforme.</td></tr>
+    <tr><td class="k">Flow rate (fluxo)</td><td>Quantidade de plástico: topo liso, sem sulcos nem excesso.</td><td>Filamento de outra marca.</td><td>Imprime vários quadrados com fluxos diferentes; escolha o topo mais liso (passe o dedo). Há uma 2ª passada mais fina.</td></tr>
+    <tr><td class="k">Max volumetric speed</td><td>O teto de mm³/s do filamento (módulo 9).</td><td>Filamento genérico, se quiser mais velocidade.</td><td>Uma torre que acelera; veja a altura onde começa a falhar e use ~80% desse valor.</td></tr>
+    <tr><td class="k">Temperatura</td><td>A temperatura ideal do filamento.</td><td>Marca nova, fios ou camadas fracas.</td><td>Torre com faixas de temperatura: escolha a com menos fio e melhor ponte.</td></tr>
+    <tr><td class="k">Encaixe (folga)</td><td>Peças que entram uma na outra.</td><td>Sempre que trocar de filamento nas peças do Topomural.</td><td>Ver o módulo 15: gravata + canto da moldura.</td></tr>
+  </table></div>
+  <div class="box nota"><b>Pela tela da impressora</b>Em Ajustes → Calibração dá para refazer a calibração da máquina (nivelamento, vibração, ruído dos motores). Faça depois de mudar a impressora de lugar ou de mexer em correia.</div>
+</section>
+
+<!-- ================= 20 ================= -->
+<section class="mod" id="m20" data-titulo="Manutenção" data-grupo="Cuidar da máquina" data-quiz="20">
+  <div class="kick">Módulo 20</div>
+  <h2>Manutenção: rotina simples que evita 90% dos problemas</h2>
+  <p>A Bambu publica guias de manutenção com fotos para cada modelo (wiki.bambulab.com → A1 mini → Maintenance). Os intervalos abaixo são uma <b>sugestão</b> para quem imprime algumas horas por dia. Siga a wiki para o "como" de cada peça.</p>
+  <div class="tbl"><table>
+    <tr><th>Quando</th><th>O quê</th><th>Por quê</th></tr>
+    <tr><td class="k">Toda impressão</td><td>Tire a peça com a placa fria (dobre levemente a placa: a peça solta). Não encoste os dedos na área de impressão. Recolha o "cocô" de purga.</td><td>Gordura dos dedos é a causa nº 1 de peça que descola.</td></tr>
+    <tr><td class="k">Quando a 1ª camada descolar</td><td>Placa com <b>água morna + detergente</b>, esfregando, e seque bem. Álcool isopropílico só para limpeza rápida.</td><td>O álcool espalha a gordura; o detergente remove.</td></tr>
+    <tr><td class="k">Semanal (uso intenso)</td><td>Ver o <b>limpador de silicone do bico</b> (rasgado ou cheio de plástico: limpe ou troque). Limpar fiapos da área de purga e da mesa. Olhar o tubo PTFE (dobra ou aperto).</td><td>Bico sujo atrapalha a apalpação automática da mesa.</td></tr>
+    <tr><td class="k">Mensal ou ~200 h</td><td>Graxa no <b>fuso do eixo Z</b> (pouca, a do kit). Limpar com pano seco as guias dos eixos e lubrificar conforme a wiki. Conferir se as correias não estão frouxas.</td><td>Fuso seco faz barulho e marcas horizontais na peça.</td></tr>
+    <tr><td class="k">Quando avisar</td><td>Atualizar firmware (pela tela ou app). Atualizar o Bambu Studio.</td><td>Correções de calibração e novos recursos.</td></tr>
+    <tr><td class="k">Peças de consumo</td><td>Hotend, limpador de silicone, placa PEI, lâmina do cortador.</td><td>Desgastam. Tenha um hotend reserva.</td></tr>
+  </table></div>
+  <div class="box aviso"><b>O que não fazer</b>Não lubrifique as correias. Não use WD-40 nas guias. Não aperte nada "por precaução" sem um motivo. Não desmonte a cabeça sem o guia da wiki aberto.</div>
+  <h3>Barulhos normais × anormais</h3>
+  <ul>
+    <li><b>Normal:</b> "música" estranha na calibração de vibração; zumbido dos motores; ventoinha da cabeça sempre ligada; "clique" do cortador na troca de filamento.</li>
+    <li><b>Anormal:</b> estalo repetido no extrusor (o fio está escorregando: entupimento parcial ou velocidade alta demais); raspagem metálica (algo preso no eixo); batidas do bico na peça (peça empenada ou curling).</li>
+  </ul>
+</section>
+
+<!-- ================= 21 ================= -->
+<section class="mod" id="m21" data-titulo="Entupimento e erros da máquina" data-grupo="Cuidar da máquina" data-quiz="21">
+  <div class="kick">Módulo 21</div>
+  <h2>Entupimento, filamento preso e mensagens de erro</h2>
+  <h3>Como saber se é entupimento</h3>
+  <ul>
+    <li>Na tela, "Extrudar" com o bico quente e <b>não sai plástico</b> (ou sai fino e torto).</li>
+    <li>Estalos no extrusor ("tec-tec"): as engrenagens empurram e o fio não anda.</li>
+    <li>A impressão começa e logo some o plástico: peça "fantasma" no ar.</li>
+  </ul>
+  <h3>Do mais simples ao mais trabalhoso</h3>
+  <ol class="steps">
+    <li><b>Descarte o óbvio:</b> o carretel girou livre? Tem nó? O fio chegou à cabeça? O tubo PTFE está encaixado nas duas pontas?</li>
+    <li><b>Descarregar e carregar de novo.</b> Corte a ponta. Às vezes a ponta deformada só estava presa no caminho.</li>
+    <li><b>Aquecer mais e empurrar:</b> pela tela, bico a ~240 °C (PLA), e "Extrudar" algumas vezes. Uma sujeira parcial costuma sair.</li>
+    <li><b>Puxada a frio (cold pull):</b> aquece, empurra o fio até sair, deixa esfriar até ~90 °C (PLA) e puxa firme. A ponta sai com o formato do interior do bico, trazendo a sujeira. Repita até a ponta sair limpa. A forma de "soltar" o fio do extrusor da A1 para puxar à mão está no guia "cold pull" da wiki para A1 <span class="tag c">confira</span>.</li>
+    <li><b>Agulha de desentupir</b> (vem no kit): com o bico quente, por baixo, com cuidado e sem forçar.</li>
+    <li><b>Trocar o hotend</b> (módulo 18) e voltar a imprimir. O entupido você desentope com calma depois ou substitui: é peça de consumo.</li>
+  </ol>
+  <h3>Causas de entupimento (para não repetir)</h3>
+  <ul>
+    <li>Filamento úmido ou de baixa qualidade, com sujeira.</li>
+    <li>Temperatura baixa para a velocidade (pedindo mais plástico do que o bico derrete).</li>
+    <li>Bico 0,2 com filamento com carga (glitter, madeira, fibra).</li>
+    <li>Bico parado quente por muito tempo com filamento dentro (o PLA "cozinha"). Não deixe a máquina quente sem imprimir.</li>
+    <li>Calor subindo pela cabeça (heat creep) em ambiente muito quente ou máquina fechada numa caixa com PLA.</li>
+  </ul>
+  <h3>Filamento quebrado dentro do tubo ou da cabeça</h3>
+  <p>PLA velho fica quebradiço e parte no caminho. Dentro do tubo: solte o tubo e empurre o pedaço com outro filamento. Dentro da cabeça: siga o guia da wiki ("filament broken in toolhead"); normalmente envolve abrir a tampa da frente da cabeça. Não force o fio com alicate pelo topo.</p>
+  <h3>Mensagens de erro (HMS)</h3>
+  <p>As Bambu mostram erros com um <b>código</b> (sistema HMS) na tela, no app e na aba Dispositivo. Quase sempre há um link ou QR para a página da wiki daquele erro, com a solução. Antes de pesquisar no Google, use o link do próprio erro.</p>
+  <div class="tbl"><table>
+    <tr><th>Mensagem (ideia geral)</th><th>Primeira coisa a olhar</th></tr>
+    <tr><td class="k">Filamento acabou / não detectado</td><td>Fim do carretel ou fio fora do sensor. Carregue e continue: ela retoma de onde parou.</td></tr>
+    <tr><td class="k">Falha ao cortar o filamento</td><td>Lâmina ou alavanca do cortador presa; fio muito duro. Ver guia do cortador.</td></tr>
+    <tr><td class="k">Falha no nivelamento / na apalpação da mesa</td><td>Bico com bolinha de plástico grudada, placa mal encaixada ou suja embaixo.</td></tr>
+    <tr><td class="k">Temperatura do bico ou da mesa anormal</td><td>Hotend mal encaixado (trava aberta) ou cabo. Desligue, reencaixe o hotend, ligue.</td></tr>
+    <tr><td class="k">Entupimento / extrusão anormal detectada</td><td>Siga a lista acima.</td></tr>
+    <tr><td class="k">Placa errada / sem placa</td><td>A placa da mesa não bate com o perfil do arquivo.</td></tr>
+  </table></div>
+</section>
+
+<!-- ================= 22 ================= -->
+<section class="mod" id="m22" data-titulo="Diagnóstico de defeitos" data-grupo="Consulta">
+  <div class="kick">Módulo 22</div>
+  <h2>Diagnóstico: a peça saiu estranha. E agora?</h2>
+  <p>Digite o que você está vendo. As causas estão em ordem de probabilidade na A1 Mini.</p>
+  <input class="busca" id="buscaDef" placeholder="Ex.: fios, descolou, topo com buraco, pico derretido, costura, ímã...">
+  <div id="listaDef"></div>
+</section>
+
+<!-- ================= 23 ================= -->
+<section class="mod" id="m23" data-titulo="Checklist e glossário" data-grupo="Consulta">
+  <div class="kick">Módulo 23</div>
+  <h2>Checklist antes de imprimir e glossário</h2>
+  <h3>Checklist (fica marcado neste navegador)</h3>
+  <ul class="chk" id="checklist">
+    <li><label><input type="checkbox">Placa no lugar, limpa, e o tipo da placa no Bambu Studio bate com a real.</label></li>
+    <li><label><input type="checkbox">Impressora certa no perfil (bico 0,4 ou 0,2, igual ao instalado e ao informado na tela).</label></li>
+    <li><label><input type="checkbox">Filamento certo no perfil e seco. Tem fio suficiente no carretel (compare com os gramas da pré-visualização)?</label></li>
+    <li><label><input type="checkbox">Peça com a base na mesa, sem escala alterada, dentro da área.</label></li>
+    <li><label><input type="checkbox">Perfil de processo da receita (relevo / moldura / encaixe).</label></li>
+    <li><label><input type="checkbox">Pré-visualização olhada: trilha e texto apareceram inteiros? Sem suporte inesperado?</label></li>
+    <li><label><input type="checkbox">Costura na quina ou pintada.</label></li>
+    <li><label><input type="checkbox">Pausas de ímã e de cor conferidas DEPOIS da última mudança no fatiamento.</label></li>
+    <li><label><input type="checkbox">Ímãs separados, com a marca de polaridade, pinça e cola à mão.</label></li>
+    <li><label><input type="checkbox">Anotei a hora das pausas; vou estar perto na primeira camada.</label></li>
+  </ul>
+  <button id="limparChk">Desmarcar tudo</button>
+
+  <h3>Glossário</h3>
+  <div class="tbl"><table>
+    <tr><td class="k">AMS / AMS Lite</td><td>Trocador automático de filamento da Bambu (até 4 cores).</td></tr>
+    <tr><td class="k">BMCU</td><td>Trocador de 4 cores da comunidade, compatível com a A1 Mini, mais barato que o AMS Lite.</td></tr>
+    <tr><td class="k">Arachne</td><td>Gerador de paredes que varia a largura da linha; bom para detalhes finos.</td></tr>
+    <tr><td class="k">Bambu Handy</td><td>App de celular para vincular, acompanhar e controlar a impressora.</td></tr>
+    <tr><td class="k">Brim (aba)</td><td>Borda fina grudada na peça para aumentar a adesão.</td></tr>
+    <tr><td class="k">Cold pull</td><td>Puxada a frio para limpar o interior do bico.</td></tr>
+    <tr><td class="k">Costura (seam)</td><td>Ponto onde cada volta de parede começa/termina.</td></tr>
+    <tr><td class="k">Flow Dynamics</td><td>Nome da Bambu para pressure advance: compensação da pressão no bico.</td></tr>
+    <tr><td class="k">Fluxo (flow ratio)</td><td>Multiplicador da quantidade de plástico.</td></tr>
+    <tr><td class="k">Hotend</td><td>Conjunto quente: bico + bloco aquecido. Na A1 troca inteiro.</td></tr>
+    <tr><td class="k">HMS</td><td>Sistema de códigos de erro da Bambu.</td></tr>
+    <tr><td class="k">Ironing</td><td>Passar o bico quente de novo no topo para alisar.</td></tr>
+    <tr><td class="k">Lightning</td><td>Preenchimento que só sustenta o topo; o mais rápido.</td></tr>
+    <tr><td class="k">MakerWorld</td><td>Site de modelos da Bambu, integrado ao Bambu Studio.</td></tr>
+    <tr><td class="k">PEI texturizada</td><td>A placa que vem na A1 Mini: segura PLA sem cola, deixa a face de baixo granulada.</td></tr>
+    <tr><td class="k">Pé de elefante</td><td>Primeira camada mais larga que o resto.</td></tr>
+    <tr><td class="k">Prime tower</td><td>Torre de purga usada em multicor.</td></tr>
+    <tr><td class="k">PTFE</td><td>Tubo branco que guia o filamento até a cabeça.</td></tr>
+    <tr><td class="k">Purga</td><td>Plástico jogado fora para limpar o bico (na carga ou na troca de cor).</td></tr>
+    <tr><td class="k">Velocidade volumétrica</td><td>mm³ de plástico por segundo; o limite real de velocidade.</td></tr>
+    <tr><td class="k">Z-hop</td><td>Levantar o bico ao se deslocar para não raspar na peça.</td></tr>
+  </table></div>
+  <div class="box nota"><b>Fontes oficiais</b>wiki.bambulab.com (guias com foto de cada peça e erro), o fórum da Bambu e a própria MakerWorld. Quando este curso e a wiki discordarem, vale a wiki: ela acompanha o firmware.</div>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CHAVE="cursoA1Mini_v1", CHAVE_TEMA="cursoA1MiniTema", CHK="cursoA1MiniCheck";
+function ler(k,def){try{var v=localStorage.getItem(k);return v?JSON.parse(v):def}catch(e){return def}}
+function gravar(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function $(id){return document.getElementById(id)}
+var feitos=ler(CHAVE,{});
+var mods=[].slice.call(document.querySelectorAll("section.mod"));
+
+/* ---------- tema ---------- */
+var tema=ler(CHAVE_TEMA,null);
+if(tema)document.documentElement.setAttribute("data-theme",tema);
+$("btnTema").onclick=function(){
+  var at=document.documentElement.getAttribute("data-theme");
+  var escuro=at==="dark"||(!at&&matchMedia("(prefers-color-scheme: dark)").matches);
+  var novo=escuro?"light":"dark";
+  document.documentElement.setAttribute("data-theme",novo); gravar(CHAVE_TEMA,novo);
+};
+
+/* ---------- sumário + concluído ---------- */
+var toc=$("toc"), grupoAtual="";
+mods.forEach(function(s,i){
+  if(s.dataset.grupo&&s.dataset.grupo!==grupoAtual){ grupoAtual=s.dataset.grupo; var g=document.createElement("li"); g.className="grp"; g.textContent=grupoAtual; toc.appendChild(g); }
+  var li=document.createElement("li"); li.id="t-"+s.id;
+  li.innerHTML='<a href="#'+s.id+'"><span class="n">'+i+'</span><span>'+s.dataset.titulo+'</span></a>';
+  toc.appendChild(li);
+  var lab=document.createElement("label"); lab.className="concl";
+  lab.innerHTML='<input type="checkbox"> Concluí este módulo';
+  var cb=lab.querySelector("input");
+  cb.onchange=function(){ if(cb.checked)feitos[s.id]=1; else delete feitos[s.id]; gravar(CHAVE,feitos); atualiza(); };
+  s.appendChild(lab);
+});
+function atualiza(){
+  var n=0;
+  mods.forEach(function(s){ var f=!!feitos[s.id]; if(f)n++; $("t-"+s.id).classList.toggle("feito",f); s.querySelector(".concl input").checked=f; });
+  $("progbar").style.width=(100*n/mods.length)+"%";
+  $("progtxt").textContent=n+" de "+mods.length+" módulos concluídos";
+}
+atualiza();
+$("btnZerar").onclick=function(){ if(confirm("Apagar o progresso dos módulos?")){feitos={};gravar(CHAVE,feitos);atualiza();} };
+var links=[].slice.call(toc.querySelectorAll("a"));
+var obs=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(a){a.classList.toggle("ativo",a.getAttribute("href")==="#"+e.target.id)}); } })},{rootMargin:"-30% 0px -65% 0px"});
+mods.forEach(function(s){obs.observe(s)});
+var side=$("side");
+$("btnMenu").onclick=function(){side.classList.toggle("aberto")};
+links.forEach(function(a){a.addEventListener("click",function(){side.classList.remove("aberto")})});
+
+/* ---------- quizzes ---------- */
+var Q={
+ 1:[["Na A1 Mini, o que se move no eixo Y?",["A cabeça de impressão","A mesa inteira","A coluna"],1,"Ela é 'cama que anda': a mesa vai e volta. Por isso peças altas e finas balançam, mas o relevo, baixo e largo, não sofre."],
+    ["O hexágono de 124 mm cabe na A1 Mini?",["Não, a mesa tem 120 mm","Sim, a área é 180 × 180 mm","Só na diagonal"],1,"180 × 180 × 180 mm. A moldura (~150 mm) também cabe."]],
+ 2:[["Por que PLA Matte combina com o relevo?",["É mais forte","Esconde as linhas de camada","Imprime mais rápido"],1,"O acabamento fosco disfarça a 'escadinha' das encostas."],
+    ["Qual a melhor ferramenta contra entupimento na A1?",["Um kit de agulhas caro","Um hotend reserva","Cola em bastão"],1,"Troca em 1 minuto e você desentope o outro com calma."]],
+ 3:[["A impressora não acha o seu Wi-Fi. Primeira suspeita:",["A rede é só 5 GHz ou mistura 2,4/5 com o mesmo nome","Falta atualizar o Bambu Studio","A placa está errada"],0,"A A1 Mini só conecta em 2,4 GHz."],
+    ["Por que imprimir primeiro um modelo pronto com perfil padrão?",["Para gastar menos filamento","Para saber que a máquina está boa antes de mexer em ajustes","Porque é obrigatório"],1,"Se o padrão sai bom, problemas futuros vêm do arquivo ou do ajuste, não da máquina."]],
+ 4:[["Por que cortar a ponta do filamento em diagonal antes de carregar?",["Fica bonito","Ponta torta ou esmagada enrosca no caminho; a diagonal entra fácil","Para medir o diâmetro"],1,"A ponta em bisel guia o fio pelas engrenagens."],
+    ["Estalinhos e fios de teia de repente, com o mesmo perfil de sempre. Primeira suspeita:",["Filamento úmido","Correia frouxa","Firmware desatualizado"],0,"Seque o filamento: 45–50 °C por 4–6 h para PLA."]],
+ 5:[["A temperatura do bico fica em qual perfil?",["Processo","Filamento","Placa"],1,"O que é do material fica no filamento; o que é da peça fica no processo."],
+    ["Para que serve o modo Avançado no painel de processo?",["Imprimir mais rápido","Mostrar todos os ajustes, inclusive os escondidos","Ativar o AMS"],1,"Muitos ajustes deste curso só aparecem com ele ligado."]],
+ 6:[["Sem AMS, qual o jeito mais limpo de ter moldura e relevo de cores diferentes?",["Trocar por camada","Imprimir como peças separadas, uma cor por placa","Pintar a moldura"],1,"Cada placa numa cor, sem pausa nem mistura."],
+    ["Quer camada grossa só na base escondida do relevo e fina no terreno. Use...",["Modificador por faixa de altura","Parte negativa","Escala"],0,"Height range modifier: de Z = a até Z = b, outros ajustes."]],
+ 7:[["A trilha do relevo sumiu na pré-visualização em alguns trechos. O que tentar?",["Ironing","Arachne e/ou trilha mais larga no gerador (≥ 1 mm)","Mais preenchimento"],1,"Detalhe mais fino que ~0,45 mm não existe para o bico 0,4."],
+    ["A borda de baixo do relevo trava ao entrar na moldura. Qual ajuste?",["Elephant foot compensation","Seam position","Bridge flow"],0,"A 1ª camada sai esmagada e mais larga; a compensação a encolhe."],
+    ["Ironing no topo do terreno é boa ideia?",["Sim, sempre","Não: só funciona em superfície plana","Só com bico 0,2"],1,"Em terreno curvo o ferro pega pedacinhos e marca. Use em água plana ou na moldura."]],
+ 8:[["Quer a gravata do encaixe mais forte gastando pouco. O que mudar primeiro?",["Preenchimento 20% → 60%","Paredes 2 → 4","Camada 0,20 → 0,12"],1,"A força mora nas paredes."],
+    ["Qual preenchimento é o mais rápido para o miolo das montanhas?",["Honeycomb","Lightning","Gyroid 40%"],1,"Ele só sustenta o topo. Garanta topo ≥ 0,8 mm."]],
+ 9:[["PLA com 21 mm³/s, linha 0,45, camada 0,20. Velocidade máxima real?",["~233 mm/s","~500 mm/s","~100 mm/s"],0,"21 ÷ (0,45 × 0,20) ≈ 233. O resto do teto do perfil é ignorado."],
+    ["Onde ver o que consome mais tempo na peça?",["Na aba Dispositivo","Na Pré-visualização, por Tipo de linha","No perfil da impressora"],1,"A legenda mostra o tempo de cada tipo de linha."]],
+ 10:[["Um relevo do Topomural precisa de suporte?",["Sim, sempre","Não: cada ponto se apoia no que está embaixo","Só com exagero alto"],1,"Se o fatiador pedir suporte, a peça provavelmente está deitada errada."],
+     ["O teto do vão do ímã (6 mm) precisa de suporte?",["Sim","Não, é uma ponte curta","Só com bico 0,2"],1,"Pontes curtas saem sem apoio."]],
+ 11:[["Brim no relevo do Topomural?",["Sim, sempre","Não: a base é grande e o brim deixa rebarba na borda que encaixa","Só no verão"],1,"Base grande gruda sozinha."],
+     ["O que a torre de purga faz?",["Segura a peça","Limpa a cor antiga do bico a cada troca","Esfria a peça"],1,"Usada no multicor (AMS/BMCU)."]],
+ 12:[["O pico da montanha saiu derretido, virando gota. O que ajuda?",["Imprimir dois relevos na mesma placa ou ativar o tempo mínimo por camada","Mais preenchimento","Mesa mais quente"],0,"O pico precisa de tempo para esfriar entre camadas."],
+     ["Você deve editar o start G-code da A1 Mini?",["Sim, como na Ender","Não: ele tem a calibração e a purga; editar errado pode bater o bico","Só para PLA"],1,"Na Ender era necessário; aqui não."]],
+ 13:[["Num hexágono, qual modo põe a costura numa quina?",["Random","Aligned","Back (com um lado reto atrás)"],1,"Aligned prefere quinas. Back com face reta atrás põe a costura no meio da face."],
+     ["A costura apareceu no meio de uma face plana. Solução direta:",["Pintar a costura numa quina","Mais preenchimento","Camada mais grossa"],0,"A pintura manda a costura para onde você quer."]],
+ 14:[["Qual a melhor troca de tempo × beleza para relevo?",["Bico 0,2","Altura de camada variável","Ironing"],1,"Camada fina onde a encosta é suave, grossa onde é íngreme ou escondida."],
+     ["O Exagero do Relevo dobrou. O que acontece com o tempo?",["Nada","Cresce, porque há mais camadas na parte cara (o terreno)","Diminui"],1,"Mais altura de terreno = mais camadas finas com muito contorno e topo."]],
+ 15:[["Ao acertar a folga do encaixe, onde mexer?",["Na compensação X-Y do fatiador","Na Folga do Encaixe do gerador","Na temperatura"],1,"A folga mora em um lugar só: o gerador."],
+     ["Você vai usar altura variável e pausa para ímã. A ordem é...",["Pausa primeiro, depois altura variável","Altura variável primeiro, pausa por último","Tanto faz"],1,"Mudar as camadas muda o número da camada da pausa."]],
+ 16:[["Em qual camada se coloca a pausa do ímã?",["Na última camada do vão aberto","Na primeira camada em que o buraco some (a tampa)","Na primeira camada da peça"],1,"A pausa acontece antes dessa camada ser impressa, com o vão ainda aberto."],
+     ["Durante a pausa, a cabeça atrapalha. Você deve...",["Mover os eixos pela tela","Trabalhar pelos lados com a pinça, sem mover os eixos","Desligar a impressora"],1,"Mover pode tirar a posição e deixar degrau."],
+     ["A polaridade importa no ímã de geladeira da moldura?",["Sim","Não: o aço da geladeira não tem polo","Só no inverno"],1,"Importa no ímã de encaixe relevo ↔ moldura."]],
+ 17:[["Por que a trilha não sai colorida com troca de cor por camada?",["A trilha é fina demais","Numa mesma camada existem trilha e terreno lado a lado","A impressora não permite"],1,"Troca por camada só separa 'embaixo/em cima'."],
+     ["Trocou de azul para branco e o branco saiu manchado. O que faltou?",["Purgar mais antes de continuar","Mais preenchimento","Ironing"],0,"Escuro para claro precisa de bem mais purga."]],
+ 18:[["Trocou o bico para 0,2. Quais dois lugares precisam saber disso?",["A tela da impressora e o perfil de impressora no Bambu Studio","Só o Bambu Studio","Só a tela"],0,"Se não baterem, a impressora avisa ou extruda errado."],
+     ["Hexágono de 124 mm com texto fino. Melhor caminho?",["Tudo no 0,2","Texto maior no gerador e Arachne no 0,4, ou placa de nome separada no 0,2","Escalar a peça"],1,"O 0,2 levaria 3–4× mais tempo na peça inteira."]],
+ 19:[["Com filamento Bambu, preciso calibrar fluxo?",["Sim, sempre","Normalmente não: os perfis já vêm calibrados","Só no bico 0,2"],1,"Calibre ao trocar de marca ou se algo estiver estranho."]],
+ 20:[["A 1ª camada começou a descolar. Primeira ação:",["Cola em bastão","Lavar a placa com água morna e detergente","Subir a temperatura do bico"],1,"O detergente remove a gordura; o álcool só espalha."],
+     ["Onde vai graxa?",["Nas correias","No fuso do eixo Z","No bico"],1,"Nunca lubrifique correias."]],
+ 21:[["Entupiu no meio de um pedido urgente. O mais rápido:",["Desmontar a cabeça","Trocar o hotend pelo reserva","Agulha por cima"],1,"Troca em 1 minuto; desentope o outro depois."],
+     ["Apareceu um erro com código. Primeiro passo:",["Desligar e ligar","Abrir o link/QR do próprio erro na wiki","Reinstalar o Bambu Studio"],1,"O HMS aponta para a página com a solução."]]
+};
+mods.forEach(function(s){
+  var k=s.dataset.quiz; if(!k||!Q[k])return;
+  var d=document.createElement("div"); d.className="quiz"; d.innerHTML="<h3>Teste rápido</h3>";
+  Q[k].forEach(function(q){
+    var b=document.createElement("div"); b.className="q";
+    b.innerHTML="<p>"+q[0]+"</p>"+q[1].map(function(o,i){return '<button data-i="'+i+'">'+o+'</button>'}).join("")+'<div class="exp">'+q[3]+'</div>';
+    [].forEach.call(b.querySelectorAll("button"),function(bt){ bt.onclick=function(){
+      [].forEach.call(b.querySelectorAll("button"),function(x){x.classList.remove("certo","errado")});
+      var i=+bt.dataset.i; bt.classList.add(i===q[2]?"certo":"errado");
+      if(i!==q[2]) b.querySelectorAll("button")[q[2]].classList.add("certo");
+      b.classList.add("resp");
+    }; });
+    d.appendChild(b);
+  });
+  s.insertBefore(d,s.querySelector(".concl"));
+});
+
+/* ---------- módulo 1: anatomia ---------- */
+var PARTES={
+ base:["Base","Guarda a eletrônica, a fonte e os motores do eixo Y. Fica parada; é sobre ela que a mesa corre."],
+ mesa:["Mesa aquecida (eixo Y)","Vai e volta (frente/trás) e aquece até 80 °C. Ímã embaixo da superfície segura a placa."],
+ placa:["Placa PEI texturizada","Chapa de aço flexível, magnética, coberta de PEI. Segura PLA sem cola. Dobre levemente (fria) para soltar a peça. Lave com água e detergente."],
+ coluna:["Coluna (eixo Z)","A torre que sobe e desce o braço a cada camada. Leva o suporte do carretel no alto."],
+ fuso:["Fuso do Z","Barra rosqueada que faz o braço subir. É onde vai a graxa na manutenção."],
+ braco:["Braço (eixo X)","Viga horizontal onde a cabeça corre para os lados. Fica 'em balanço', preso só na coluna."],
+ cabeca:["Cabeça de impressão (toolhead)","Tem o extrusor (engrenagens que empurram o fio), o sensor de filamento, o cortador, as ventoinhas e o hotend. É também o sensor que apalpa a mesa no nivelamento."],
+ hotend:["Hotend e bico","O conjunto quente que derrete o plástico. Na A1 sai inteiro com uma trava, sem ferramenta, para trocar de 0,4 para 0,2 ou substituir um entupido."],
+ ventoinha:["Ventoinha da peça","Sopra ar na peça logo abaixo do bico para o PLA endurecer rápido. Essencial em pontes e picos do relevo."],
+ cortador:["Cortador de filamento","Lâmina na cabeça acionada por uma alavanca que bate na lateral. Corta o fio ao descarregar e nas trocas do AMS/BMCU."],
+ carretel:["Suporte do carretel","No alto da coluna. O fio deve sair livre, sem curva fechada e sem cruzar sobre si mesmo."],
+ ptfe:["Tubo PTFE","Tubo branco liso que guia o fio do carretel até a cabeça sem atrito. Não pode dobrar."],
+ tela:["Tela sensível ao toque","Status, carregar/descarregar filamento, controles, ajustes, calibração e tipo do bico."],
+ purga:["Área de purga e limpeza","Onde a A1 joga o plástico de purga e limpa o bico antes de imprimir. Recolha o 'cocô' de tempos em tempos e confira o limpador de silicone."],
+ sd:["Entrada microSD","Para timelapse, imprimir sem rede e atualizar firmware offline. A posição exata varia: confira no seu aparelho."],
+ bus:["Porta do AMS Lite (Bambu Bus)","Onde liga o trocador de cores (AMS Lite ou BMCU). Posição aproximada no desenho."]
+};
+var gs=[].slice.call(document.querySelectorAll("#anatomia .parte"));
+gs.forEach(function(g){ g.addEventListener("click",function(){
+  gs.forEach(function(x){x.classList.remove("sel")}); g.classList.add("sel");
+  var p=PARTES[g.dataset.p]; $("infoParte").innerHTML="<b>"+p[0]+"</b>"+p[1];
+}); });
+
+/* ---------- módulo 9: volumétrica ---------- */
+function calcVol(){
+  var v=+$("vVol").value, c=+$("vCam").value, l=+$("vLin").value;
+  $("vVolT").textContent=v+" mm³/s"; $("vCamT").textContent=c.toFixed(2).replace(".",",")+" mm"; $("vLinT").textContent=l.toFixed(2).replace(".",",")+" mm";
+  var max=v/(c*l);
+  $("vRes").textContent=Math.round(Math.min(max,300))+" mm/s";
+  $("vLim").textContent=max<300?"o derretimento (volumétrica)":"o teto do perfil (300)";
+}
+["vVol","vCam","vLin"].forEach(function(id){$(id).oninput=calcVol}); calcVol();
+
+/* ---------- módulo 13: costura no hexágono ---------- */
+var seamModo="alinhada";
+var SEAMTXT={
+ alinhada:"<b>Aligned:</b> a costura procura uma quina e fica sempre na mesma. No hexágono, some na aresta. É o melhor ponto de partida.",
+ proxima:"<b>Nearest:</b> começa onde for mais perto do movimento anterior. Em peças com várias quinas, ela pula entre quinas: espalha pontinhos em várias arestas.",
+ traseira:"<b>Back:</b> vai para o ponto mais ao fundo da peça. Se o fundo for uma <b>face reta</b> (como neste hexágono), a costura vira uma linha no meio da face. Gire a peça 30° (para uma quina ficar atrás) ou use Pintada.",
+ aleatoria:"<b>Random:</b> espalha os pontos por toda a parede. Não forma linha, mas deixa a superfície com 'espinhas' em todo lugar. Às vezes fica natural em formas orgânicas; no hexágono, piora.",
+ pintada:"<b>Pintada:</b> você pinta com o pincel de costura a quina que escolher (aqui, a da frente-esquerda). Controle total, inclusive para levar a costura a uma quina que fica escondida no quadro."
+};
+function rnd(i){var x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function desenhaSeam(){
+  var N=22, s="", cx=150, cy=125, R=95;
+  var vx=[],vy=[];
+  for(var k=0;k<6;k++){ var a=k*Math.PI/3; vx.push(cx+R*Math.cos(a)); vy.push(cy-R*Math.sin(a)); }
+  s+='<text x="'+cx+'" y="14" text-anchor="middle" font-size="12" fill="var(--tx2)">vista de cima (fundo = em cima)</text>';
+  s+='<polygon points="'+vx.map(function(x,i){return x.toFixed(1)+","+vy[i].toFixed(1)}).join(" ")+'" fill="var(--acbg)" stroke="var(--ac)" stroke-width="3"/>';
+  s+='<text x="'+cx+'" y="'+(cy+R+28)+'" text-anchor="middle" font-size="11" fill="var(--tx2)">frente ↓</text>';
+  var us=[];
+  for(var j=0;j<N;j++){
+    var u;
+    if(seamModo==="alinhada") u=2;
+    else if(seamModo==="proxima") u=Math.floor(rnd(j+3)*6);
+    else if(seamModo==="traseira") u=1.5;
+    else if(seamModo==="pintada") u=4;
+    else u=rnd(j+10)*6;
+    us.push(u);
+    var k0=Math.floor(u)%6, f=u-Math.floor(u), k1=(k0+1)%6;
+    var px=vx[k0]+(vx[k1]-vx[k0])*f, py=vy[k0]+(vy[k1]-vy[k0])*f;
+    s+='<circle cx="'+px.toFixed(1)+'" cy="'+py.toFixed(1)+'" r="4" fill="var(--tx)"/>';
+  }
+  // lateral desenrolada
+  var x0=300, W=320, y0=220, hC=8;
+  s+='<text x="'+(x0+W/2)+'" y="14" text-anchor="middle" font-size="12" fill="var(--tx2)">as 6 faces laterais "desenroladas"</text>';
+  for(var i=0;i<N;i++) s+='<rect x="'+x0+'" y="'+(y0-(i+1)*hC)+'" width="'+W+'" height="'+(hC-1)+'" fill="var(--ac)" opacity="'+(i%2?".5":".35")+'"/>';
+  for(var q=0;q<=6;q++){ var xq=x0+q/6*W; s+='<line x1="'+xq+'" y1="'+(y0-N*hC)+'" x2="'+xq+'" y2="'+y0+'" stroke="var(--tx2)" stroke-dasharray="3 3"/>'; }
+  s+='<text x="'+(x0+1.5/6*W)+'" y="'+(y0+16)+'" text-anchor="middle" font-size="11" fill="var(--tx2)">face do fundo</text>';
+  s+='<text x="'+(x0+4.5/6*W)+'" y="'+(y0+16)+'" text-anchor="middle" font-size="11" fill="var(--tx2)">face da frente</text>';
+  us.forEach(function(u,j){ s+='<circle cx="'+(x0+(u%6)/6*W).toFixed(1)+'" cy="'+(y0-j*hC-hC/2)+'" r="3.4" fill="var(--tx)"/>'; });
+  s+='<text x="'+(x0+W/2)+'" y="'+(y0+32)+'" text-anchor="middle" font-size="11" fill="var(--tx2)">linhas tracejadas = quinas</text>';
+  $("seamsvg").innerHTML=s; $("seamtxt").innerHTML=SEAMTXT[seamModo];
+}
+var sbs=[].slice.call(document.querySelectorAll("#seamModo button"));
+sbs.forEach(function(b){ b.onclick=function(){ sbs.forEach(function(x){x.classList.remove("on")}); b.classList.add("on"); seamModo=b.dataset.s; desenhaSeam(); }; });
+desenhaSeam();
+
+/* ---------- terreno comum (módulos 15 e 17) ---------- */
+var AGUA_X=22, AGUA_Z=3.0, BASE=2.0;
+function g(x){ return 2.6*Math.exp(-Math.pow((x-60)/15,2)) + 1.6*Math.exp(-Math.pow((x-98)/9,2)) + 0.5*Math.min(1,Math.max(0,(x-AGUA_X)/18)) + 0.25*Math.sin(x/5)*Math.min(1,Math.max(0,(x-AGUA_X)/10)); }
+function H(x,E){ return x<AGUA_X?AGUA_Z:AGUA_Z+E*Math.max(0,g(x)); }
+var DX=0.5, XS=[]; for(var xx=0;xx<=124;xx+=DX) XS.push(xx);
+function fmt(n,d){return n.toFixed(d===undefined?2:d).replace(".",",")}
+function camadas(hFix,variavel,E){
+  var L=[], z=0, zmax=0; XS.forEach(function(x){zmax=Math.max(zmax,H(x,E))});
+  L.push([0,0.2]); z=0.2;
+  while(z<zmax-0.001){
+    var h=hFix;
+    if(variavel){
+      var minS=Infinity;
+      for(var i=0;i<XS.length-1;i++){ var a=H(XS[i],E)-z, b=H(XS[i+1],E)-z; if(a*b<0||(a>0&&a<0.3)){ var s=Math.abs(H(XS[i+1],E)-H(XS[i],E))/DX; if(s>0.004) minS=Math.min(minS,s); } }
+      h=minS===Infinity?0.28:Math.min(0.28,Math.max(0.08,0.06+0.5*minS));
+      h=Math.round(h/0.02)*0.02;
+    }
+    L.push([z,z+h]); z+=h;
+  }
+  return L;
+}
+function topoImpresso(L,hx){ var t=0; for(var i=0;i<L.length;i++){ var m=(L[i][0]+L[i][1])/2; if(m<=hx) t=L[i][1]; else break; } return t; }
+function custo(L,E){ var c=0; L.forEach(function(l){ var m=(l[0]+l[1])/2, n=0; XS.forEach(function(x){ if(H(x,E)>=m) n++; }); c+=0.35+n/XS.length; }); return c; }
+
+/* ---------- módulo 15: escadinha ---------- */
+var CAMS=[0.08,0.12,0.16,0.20,0.24,0.28];
+function desenhaRelevo(){
+  var h=CAMS[+$("rCam").value], vari=$("rVar").checked, E=+$("rExa").value;
+  $("rCamT").textContent=vari?"variável":fmt(h)+" mm"; $("rExaT").textContent=fmt(E,1)+"×";
+  $("rCam").disabled=vari;
+  var L=camadas(h,vari,E), Lref=camadas(0.20,false,E);
+  var sx=600/124, zTop=14, sz=210/zTop, X0=20, Y0=235, s="";
+  L.forEach(function(l){
+    var m=(l[0]+l[1])/2, y=Y0-l[1]*sz, hh=(l[1]-l[0])*sz, ini=-1;
+    for(var i=0;i<=XS.length;i++){
+      var dentro=i<XS.length&&H(XS[i],E)>=m;
+      if(dentro&&ini<0) ini=i;
+      if(!dentro&&ini>=0){ var xa=XS[ini], xb=XS[i-1]+DX, agua=xa<AGUA_X&&l[1]<=AGUA_Z+0.01;
+        s+='<rect x="'+(X0+xa*sx).toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+((xb-xa)*sx).toFixed(1)+'" height="'+Math.max(hh-0.3,0.6).toFixed(1)+'" fill="'+(xa<AGUA_X&&l[1]>AGUA_Z-0.25&&l[0]<AGUA_Z?"var(--agua)":"var(--terra)")+'" opacity="'+(agua?".95":".9")+'"/>'; ini=-1; }
+    }
+  });
+  var d="M"; XS.forEach(function(x,i){ d+=(i?" L":"")+(X0+x*sx).toFixed(1)+" "+(Y0-H(x,E)*sz).toFixed(1); });
+  s+='<path d="'+d+'" fill="none" stroke="var(--tx)" stroke-width="1.6"/>';
+  s+='<line x1="'+X0+'" y1="'+Y0+'" x2="'+(X0+600)+'" y2="'+Y0+'" stroke="var(--tx2)"/>';
+  s+='<text x="'+(X0+4)+'" y="'+(Y0-AGUA_Z*sz-6)+'" font-size="11" fill="var(--agua)">água</text>';
+  $("relevoSvg").innerHTML=s;
+  // degrau mais largo
+  var maxRun=0, run=0, prev=null;
+  XS.forEach(function(x,i){ var t=topoImpresso(L,H(x,E)); var plano=i>0&&Math.abs(H(x,E)-H(XS[i-1],E))<0.002;
+    if(t===prev&&!plano){ run+=DX; maxRun=Math.max(maxRun,run); } else run=0; prev=t; });
+  $("rN").textContent=L.length; $("rT").textContent=fmt(custo(L,E)/custo(Lref,E),1)+"×"; $("rE").textContent=fmt(maxRun,1)+" mm";
+}
+["rCam","rVar","rExa"].forEach(function(id){$(id).oninput=desenhaRelevo}); desenhaRelevo();
+
+/* ---------- módulo 16: ímã ---------- */
+function desenhaIma(){
+  var h=+$("mCam").value, tipo=$("mIma").value, piso=+$("mPiso").value;
+  $("mPisoT").textContent=fmt(piso,1)+" mm";
+  var imaH=tipo==="6x2"?2.0:1.0, vaoH=imaH+0.2, imaD=tipo==="6x2"?6:4, c0=piso, c1=piso+vaoH, total=c1+1.2;
+  var L=[[0,0.2]], z=0.2; while(z<total-0.001){ L.push([z,z+h]); z+=h; }
+  var vao=[], tampa=-1;
+  L.forEach(function(l,i){ var m=(l[0]+l[1])/2; if(m>c0&&m<c1) vao.push(i); else if(m>=c1&&tampa<0&&vao.length) tampa=i; });
+  var vaoImp=vao.length?L[vao[vao.length-1]][1]-L[vao[0]][0]:0;
+  var sz=200/total, X0=70, W=380, Y0=270, cx=X0+W/2, wv=(imaD+0.2)*22, s="";
+  L.forEach(function(l,i){
+    var y=Y0-l[1]*sz, hh=(l[1]-l[0])*sz-0.8, cor=i===tampa?"var(--ac)":"var(--terra)", op=i%2?".95":".8";
+    if(vao.indexOf(i)>=0){ s+='<rect x="'+X0+'" y="'+y.toFixed(1)+'" width="'+(W/2-wv/2)+'" height="'+hh.toFixed(1)+'" fill="'+cor+'" opacity="'+op+'"/><rect x="'+(cx+wv/2)+'" y="'+y.toFixed(1)+'" width="'+(W/2-wv/2)+'" height="'+hh.toFixed(1)+'" fill="'+cor+'" opacity="'+op+'"/>'; }
+    else s+='<rect x="'+X0+'" y="'+y.toFixed(1)+'" width="'+W+'" height="'+hh.toFixed(1)+'" fill="'+cor+'" opacity="'+op+'"/>';
+    s+='<text x="'+(X0-8)+'" y="'+(y+hh/2+4).toFixed(1)+'" text-anchor="end" font-size="10" fill="var(--tx2)">'+(i+1)+'</text>';
+  });
+  // vão desenhado (tracejado) e ímã
+  s+='<rect x="'+(cx-wv/2)+'" y="'+(Y0-c1*sz).toFixed(1)+'" width="'+wv+'" height="'+(vaoH*sz).toFixed(1)+'" fill="none" stroke="var(--info)" stroke-dasharray="4 3" stroke-width="1.5"/>';
+  var imaW=imaD*22, imaBase=vao.length?L[vao[0]][0]:c0;
+  s+='<rect x="'+(cx-imaW/2)+'" y="'+(Y0-(imaBase+imaH)*sz).toFixed(1)+'" width="'+imaW+'" height="'+(imaH*sz).toFixed(1)+'" rx="3" fill="var(--tx2)" opacity=".75"/>';
+  s+='<text x="'+cx+'" y="'+(Y0-(imaBase+imaH/2)*sz+4).toFixed(1)+'" text-anchor="middle" font-size="11" fill="var(--bg2)">ímã</text>';
+  if(tampa>=0){ var yt=Y0-L[tampa][1]*sz; s+='<text x="'+(X0+W+10)+'" y="'+(yt+10).toFixed(1)+'" font-size="12" font-weight="700" fill="var(--ac2)">⏸ pausa antes desta</text>'; }
+  s+='<text x="'+(X0-30)+'" y="12" font-size="10" fill="var(--tx2)">camada</text>';
+  s+='<text x="'+(X0+W+10)+'" y="'+(Y0-c1*sz+(vaoH*sz)/2).toFixed(1)+'" font-size="11" fill="var(--info)">vão desenhado</text>';
+  $("imaSvg").innerHTML=s;
+  var ok=vaoImp>=imaH+0.05, t;
+  if(tampa<0) t="<b>Ajuste os valores</b>";
+  else t="<b>Pausa na camada "+(tampa+1)+"</b>Na régua do Bambu Studio ela aparece com a altura "+fmt(L[tampa][1])+" mm (o topo da camada). A pausa acontece antes de ela ser impressa.<br>Vão desenhado: "+fmt(vaoH,1)+" mm · vão que sai impresso: <b>"+fmt(vaoImp)+" mm</b> · ímã: "+fmt(imaH,1)+" mm → "+(ok?"<span style='color:var(--ok)'>✔ o ímã fica abaixo da borda.</span>":"<span style='color:var(--bad)'>✘ o ímã fica saliente: o bico vai bater. Mude a camada ou aprofunde o vão no gerador.</span>");
+  $("imaTxt").innerHTML=t;
+}
+["mCam","mIma","mPiso"].forEach(function(id){$(id).oninput=desenhaIma; $(id).onchange=desenhaIma}); desenhaIma();
+
+/* ---------- módulo 17: faixas ---------- */
+function desenhaFaixas(){
+  var E=2, z1=+$("z1").value, z2=+$("z2").value; if(z2<z1){z2=z1;$("z2").value=z1;}
+  $("z1T").textContent=fmt(z1,1)+" mm"; $("z2T").textContent=fmt(z2,1)+" mm";
+  var cores=[$("c0").value,$("c1").value,$("c2").value];
+  var L=camadas(0.2,false,E), sx=600/124, sz=200/10, X0=20, Y0=225, s="", pausas=[], ult=0;
+  L.forEach(function(l,idx){
+    var faixa=l[0]>=z2-0.001?2:(l[0]>=z1-0.001?1:0);
+    if(faixa!==ult){ for(var f=ult+1;f<=faixa;f++) pausas.push([idx+1,l[1],f]); ult=faixa; }
+    var m=(l[0]+l[1])/2, y=Y0-l[1]*sz, hh=(l[1]-l[0])*sz, ini=-1;
+    for(var i=0;i<=XS.length;i++){
+      var dentro=i<XS.length&&H(XS[i],E)>=m;
+      if(dentro&&ini<0) ini=i;
+      if(!dentro&&ini>=0){ var xa=XS[ini], xb=XS[i-1]+DX; s+='<rect x="'+(X0+xa*sx).toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+((xb-xa)*sx).toFixed(1)+'" height="'+(hh-0.3).toFixed(1)+'" fill="'+cores[faixa]+'"/>'; ini=-1; }
+    }
+  });
+  var d="M"; XS.forEach(function(x,i){ d+=(i?" L":"")+(X0+x*sx).toFixed(1)+" "+(Y0-H(x,E)*sz).toFixed(1); });
+  s+='<path d="'+d+'" fill="none" stroke="var(--tx)" stroke-width="1" opacity=".5"/>';
+  $("faixaSvg").innerHTML=s;
+  var nomes=["","2ª cor","3ª cor"];
+  $("faixaTxt").innerHTML=pausas.length?"<b>"+pausas.length+" pausa(s) para troca</b>"+pausas.map(function(p){return "Pausa na camada <b>"+p[0]+"</b> (régua: "+fmt(p[1])+" mm) → carregar a "+nomes[p[2]];}).join("<br>"):"<b>Nenhuma troca</b>A peça inteira sai na 1ª cor.";
+}
+["z1","z2","c0","c1","c2"].forEach(function(id){$(id).oninput=desenhaFaixas}); desenhaFaixas();
+
+/* ---------- módulo 22: defeitos ---------- */
+var DEF=[
+ ["Peça solta da mesa / 1ª camada não gruda","solta descola gruda adesão primeira camada levanta",
+  ["Placa engordurada: lave com água morna e detergente, seque, e não toque na área de impressão.","Placa errada no perfil (temperatura da mesa diferente da ideal).","Algo embaixo da placa (migalha) ou placa mal encaixada nos pinos.","Peça com base pequena e alta: use brim.","PEI gasta (brilhante, lisa) depois de muito uso: troque a placa."]],
+ ["Fios de teia entre morros (stringing)","fios teia stringing cabelo",
+  ["Filamento úmido: seque. Quase sempre é isso na A1.","Temperatura alta: baixe 5–10 °C.","Ligue 'Avoid crossing walls'.","Restos finos saem com soprador de ar quente."]],
+ ["Topo do terreno com buracos ou 'travesseiro'","topo buraco bolha pillowing afundado",
+  ["Topo fino: espessura ≥ 0,8–1,0 mm.","Lightning muito ralo: troque para Gyroid 10%.","Ventoinha baixa (PLA quer 100%)."]],
+ ["Encosta com 'escadinha' muito visível","escada degrau camada linhas encosta",
+  ["Camada mais fina (0,12) ou altura variável (módulo 15).","PLA Matte disfarça muito.","Exagero do Relevo maior deixa as encostas mais íngremes e a escadinha menor."]],
+ ["Pico da montanha derretido / virou gota","pico derretido gota ponta topo pequeno",
+  ["'Slow down for better layer cooling' ligado com tempo mínimo de camada.","Imprima 2 peças na placa para o pico esfriar.","Temperatura 5 °C mais baixa."]],
+ ["Trilha ou texto sumiu / falhado","trilha some texto falha fino detalhe letras",
+  ["Detalhe mais fino que ~0,45 mm: alargue no gerador (trilha ≥ 1 mm, traço ≥ 0,8 mm).","Wall generator = Arachne.","Para letras muito pequenas: bico 0,2 (módulo 18)."]],
+ ["Costura visível (linha de pontinhos)","costura seam bolinha linha vertical zit",
+  ["Seam Aligned ou pintada numa quina (módulo 13).","Hexágono com face reta atrás + 'Back': gire 30° ou pinte.","Filamento úmido aumenta a bolinha.","Seam gap: bolinha → suba; buraquinho → baixe."]],
+ ["Relevo não entra na moldura / encaixe duro","encaixe trava apertado não entra folga moldura gravata",
+  ["Pé de elefante: Elephant foot compensation 0,15 e rebarbe a borda de baixo.","Folga do Encaixe do gerador +0,1 mm.","Confira se a compensação X-Y do fatiador está em 0 (para não brigar com a folga)."]],
+ ["Encaixe bambo / folgado","bambo folgado solto encaixe",
+  ["Folga do Encaixe −0,1 mm no gerador.","Ordem de paredes Inner/Outer/Inner (medida mais fiel)."]],
+ ["Ímã saliente / bico bateu no ímã","ima ímã saliente bateu pausa vão",
+  ["Vão impresso mais raso: use o simulador do módulo 16 e aprofunde o vão.","Ímã não assentou: pressione até o fundo; use gota de cola.","Pausa na camada errada: deve ser a primeira em que o buraco some."]],
+ ["Ímã não entra no vão","ima ímã não entra apertado vão pequeno",
+  ["Furos impressos encolhem: vão Ø+0,2 mm no gerador.","Pé de elefante no fundo do vão (se o vão começa na 1ª camada)."]],
+ ["Peças se repelem em vez de grudar","repele polaridade ima ímã flutua",
+  ["Polaridade invertida em uma das peças: truque da pilha e teste com a mão (módulo 16)."]],
+ ["Linha horizontal na lateral numa altura","linha horizontal marca lateral pausa troca",
+  ["Pausa (ímã ou cor) longa: o plástico esfriou. Pause pelo menor tempo possível.","Se for em toda peça na mesma altura sem pausa: fuso Z sem graxa ou sujo."]],
+ ["Cor misturada depois da troca manual","cor manchada misturada troca purga",
+  ["Purgar mais antes de continuar, principalmente de escuro para claro.","Limpar o fiapo do bico antes de continuar."]],
+ ["Ondulações ao lado das quinas (ringing / eco)","ondulação eco ringing ghosting fantasma quina",
+  ["Outer wall acceleration 3000–5000 e/ou velocidade da parede externa 120–150.","Máquina numa mesa firme.","Refazer a calibração de vibração (mudou de lugar?)."]],
+ ["Falhas e linhas finas (sub-extrusão)","falha fino buraco sub-extrusão fraca",
+  ["Entupimento parcial (módulo 21).","Filamento genérico com volumétrica alta demais no perfil: baixe a Max volumetric speed.","Carretel travando / nó / tubo dobrado.","Filamento úmido."]],
+ ["Superfície áspera, estalos, bolhas","áspero bolha estalo vapor úmido",
+  ["Filamento úmido: seque."]],
+ ["Face de baixo granulada / quer lisa","face baixo granulada lisa espelhada textura",
+  ["É a textura da placa PEI texturizada. Para face lisa: placa Smooth PEI (outra temperatura no perfil)."]]
+];
+var lista=$("listaDef");
+DEF.forEach(function(d){
+  var el=document.createElement("details"); el.dataset.busca=(d[0]+" "+d[1]).toLowerCase();
+  el.innerHTML="<summary>"+d[0]+"</summary><div class='in'><ol>"+d[2].map(function(c){return "<li>"+c+"</li>"}).join("")+"</ol></div>";
+  lista.appendChild(el);
+});
+function semAcento(t){return t.normalize("NFD").replace(/[̀-ͯ]/g,"")}
+$("buscaDef").oninput=function(){
+  var t=semAcento(this.value.toLowerCase().trim());
+  [].forEach.call(lista.children,function(el){ el.style.display=!t||semAcento(el.dataset.busca).indexOf(t)>=0?"":"none"; });
+};
+
+/* ---------- checklist ---------- */
+var chk=ler(CHK,{});
+var caixas=[].slice.call(document.querySelectorAll("#checklist input"));
+caixas.forEach(function(c,i){ c.checked=!!chk[i]; c.onchange=function(){ if(c.checked)chk[i]=1; else delete chk[i]; gravar(CHK,chk); }; });
+$("limparChk").onclick=function(){ chk={}; gravar(CHK,chk); caixas.forEach(function(c){c.checked=false}); };
+})();
+</script>
+</body>
+</html>
